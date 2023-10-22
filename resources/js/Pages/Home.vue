@@ -42,7 +42,7 @@ const props = defineProps({
             </div>
 
             <div
-                class="grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 lg:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                class="grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 md:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
             >
                 <div
                     class="shadow-xl card card-compact bg-base-200"
@@ -112,7 +112,7 @@ const props = defineProps({
                         </div>
 
                         <div
-                            class="grid grid-cols-2 gap-6 p-6 mx-auto sm:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                            class="grid grid-cols-2 gap-6 p-6 mx-auto md:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
                         >
                             <SavedAnimeCard
                                 v-for="anime in saved_animes"

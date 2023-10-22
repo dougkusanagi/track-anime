@@ -29,15 +29,14 @@ const props = defineProps({
         <div class="pt-12 pb-48">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
                 <h3
-                    class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                    id="top-10"
+                    class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
                 >
-                    # 10 Mais Populares
+                    Sua pesquisa
                 </h3>
             </div>
 
             <div
-                class="grid grid-cols-6 gap-4 px-6 mx-auto mt-6 mb-12 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                class="grid grid-cols-2 gap-4 px-6 mx-auto mt-6 mb-12 sm:grid-cols-6 max-w-7xl sm:px-6 md:px-8 sm:rounded-lg"
             >
                 <AnimeCard
                     v-for="anime in animes.data"
