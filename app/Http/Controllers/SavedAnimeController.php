@@ -48,17 +48,13 @@ class SavedAnimeController
         Session::flash('success', 'Link salvo com sucesso.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(SavedAnime $anime)
     {
-        dd($request->all());
-        $anime = SavedAnime::find($request->id);
-
-        if (!$anime) {
-            return to_route('home')->with('error', 'Anime não encontrado.');
+        if (!$anime->delete()) {
+            return to_route('home')
+                ->with('error', 'Anime não encontrado.');
         }
 
-        $anime->delete();
-
-        Session::flash('success', 'Anime excluído com sucesso da lista.');
+        Session::flash('success', 'Anime removido da lista.');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class JikanMoeAnimesService
@@ -12,7 +12,8 @@ class JikanMoeAnimesService
     // Replace params with dto class
     public static function query(
         string $q = '',
-        string $order_by = 'mal_id',
+        string $order_by = '',
+        string $sort = 'asc',
         int $limit = 10,
         int $page = 1,
         string $type = 'tv'
@@ -20,6 +21,7 @@ class JikanMoeAnimesService
         $query = http_build_query([
             'q' => $q,
             'order_by' => $order_by,
+            'sort' => $sort,
             'limit' => $limit,
             'page' => $page,
             'type' => $type,
@@ -29,7 +31,21 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+            );
+    }
+
+    public static function queryFromRequest(Request $request)
+    {
+        $query = http_build_query([
+            'q' => $request->q,
+        ]);
+
+        return cache()
+            ->remember(
+                $query,
+                now()->addDays(1),
+                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
             );
     }
 
@@ -39,7 +55,7 @@ class JikanMoeAnimesService
             ->remember(
                 'mal_id_' . $mal_id,
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime/' . $mal_id)->json()
+                fn() => Http::get(self::BASE_URL . '/anime/' . $mal_id)->json()
             );
     }
 
@@ -54,45 +70,7 @@ class JikanMoeAnimesService
             ->remember(
                 'top_ten_animes',
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
             );
-    }
-
-    public static function getAnimeBanner(int $mal_id)
-    {
-        $url = 'https://shikimori.one/api/doc/graphql';
-
-        $query = <<<GRAPHQL
-            query getUsers {
-                user {
-                    id
-                    name
-                }
-            }
-        GRAPHQL;
-
-        $response = (new Client())->request('post', '{graphql-endpoint}', [
-            'headers' => [
-                'Authorization' => 'bearer ' . $token,
-                'Content-Type' => 'application/json'
-            ],
-            'body' => $graphQLquery
-        ]);
-    }
-
-    public function graphqlQuery($endPoint, $query, $accessToken)
-    {
-        $response = new Client([
-            'base_uri' => $endPoint,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $accessToken,
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode([
-                'query' => $query,
-            ]),
-        ]);
-
-        return collect(json_decode($response->getBody()->getContents(), true));
     }
 }

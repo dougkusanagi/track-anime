@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedAnimeController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -26,13 +27,14 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/home', HomeController::class)->middleware(['auth', 'verified'])->name('home');
+Route::get('/home', HomeController::class)->middleware(['auth'])->name('home');
+Route::get('/search', SearchController::class)->middleware(['auth'])->name('search');
 
 Route::controller(SavedAnimeController::class)->group(function () {
-    Route::post('/saved-anime', 'store')->name('saved-animes.store');
-    Route::put('/saved-anime/update-episode', 'updateAnimeEpisode')->name('saved-animes.save-episode');
-    Route::put('/saved-anime/update-link', 'updateAnimeLink')->name('saved-animes.update-link');
-    Route::delete('/saved-anime', 'destroy')->name('saved-animes.destroy');
+    Route::post('/saved-anime', 'store')->name('saved-anime.store');
+    Route::put('/saved-anime/update-episode', 'updateAnimeEpisode')->name('saved-anime.save-episode');
+    Route::put('/saved-anime/update-link', 'updateAnimeLink')->name('saved-anime.update-link');
+    Route::delete('/saved-anime/delete/{anime}', 'destroy')->name('saved-anime.destroy');
 })->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
