@@ -34,21 +34,15 @@ const props = defineProps({
         <div class="pt-12 pb-48">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
                 <h3
-                    class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
+                    class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
                     id="top-10"
                 >
                     # 10 Mais Populares
-                    <button
-                        class="btn btn-primary btn-sm"
-                        @click="router.visit(route('search', { q: 'demon' }))"
-                    >
-                        test
-                    </button>
                 </h3>
             </div>
 
             <div
-                class="grid grid-cols-10 gap-4 px-6 mx-auto mt-6 mb-12 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                class="grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 lg:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
             >
                 <div
                     class="shadow-xl card card-compact bg-base-200"
@@ -118,7 +112,7 @@ const props = defineProps({
                         </div>
 
                         <div
-                            class="grid grid-cols-5 gap-6 p-6 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                            class="grid grid-cols-2 gap-6 p-6 mx-auto sm:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
                         >
                             <SavedAnimeCard
                                 v-for="anime in saved_animes"
