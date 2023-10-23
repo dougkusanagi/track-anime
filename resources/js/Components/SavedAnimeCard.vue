@@ -1,38 +1,49 @@
 <script setup>
 import { router, useForm } from "@inertiajs/vue3";
-import debounce from "@/Composables/debounce.js";
+import useDebounce from "@/Composables/useDebounce.js";
+import useUrl from "@/Composables/useUrl";
 
 import Ellipsis from "@/Icons/HeroIcons/Ellipsis.vue";
 import ArrowTopRightSquare from "@/Icons/HeroIcons/ArrowTopRightSquare.vue";
 import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
+import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
 
 const props = defineProps({ anime: Object });
-const update_link_form = useForm({
+const links_form = useForm({
     id: props.anime.id,
-    link: props.anime.link,
+    new_link: "",
 });
 
-function updateSavedAnimeEpisode(saved_anime, episode_count) {
-    debounce(() => {
+function updateSavedAnimeEpisode(anime, episode_count) {
+    useDebounce(() => {
         router.put(
             route("saved-anime.save-episode"),
-            {
-                saved_anime,
-                episode_count,
-            },
-            {
-                preserveScroll: true,
-            }
+            { anime, episode_count },
+            { preserveScroll: true }
         );
     }, 700);
 }
 
-function updateSavedAnimeLink() {
-    debounce(() => {
-        router.put(route("saved-anime.update-link"), update_link_form, {
-            preserveScroll: true,
-        });
-    }, 700);
+function addLink() {
+    if (!useUrl().isUrl(links_form.new_link)) {
+        links_form.new_link = "";
+        alert("URL inválida");
+        return;
+    }
+
+    router.put(route("saved-anime.update-link"), links_form, {
+        preserveScroll: true,
+    });
+
+    links_form.new_link = "";
+}
+
+function removeLink(anime, link) {
+    router.put(
+        route("saved-anime.delete-link", { anime }),
+        { link },
+        { preserveScroll: true }
+    );
 }
 
 function removeAnime() {
@@ -60,10 +71,7 @@ function removeAnime() {
             </div>
 
             <figure>
-                <img
-                    class="w-full h-[260px] object-cover"
-                    :src="anime.image_cover_url"
-                />
+                <img class="w-full h-[320px]" :src="anime.image_cover_url" />
             </figure>
         </div>
 
@@ -84,12 +92,6 @@ function removeAnime() {
                         "
                     />
 
-                    <!-- <button
-                        class="btn btn-square btn-outline btn-primary btn-sm join-item"
-                    >
-                        +
-                    </button> -->
-
                     <div class="dropdown dropdown-end">
                         <label
                             tabindex="0"
@@ -100,47 +102,52 @@ function removeAnime() {
 
                         <ul
                             tabindex="0"
-                            class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52"
+                            class="p-2 shadow dropdown-content menu bg-base-100 rounded-boxfit"
                         >
-                            <li class="z-40">
-                                <a :href="anime.link ?? '#'" target="_blank">
-                                    <ArrowTopRightSquare class="w-5 h-5" />
+                            <li v-for="link in anime.links">
+                                <div
+                                    class="flex justify-between gap-4"
+                                    title="Cole o link do seu site de animes preferido..."
+                                    :key="link"
+                                >
+                                    <a
+                                        :href="link ?? '#'"
+                                        target="_blank"
+                                        class="flex items-center gap-1"
+                                    >
+                                        <ArrowTopRightSquare class="w-3 h-3" />
 
-                                    Assistir
-                                </a>
+                                        {{ useUrl().domain(link) }}
+                                    </a>
+
+                                    <button
+                                        class="text-red-500 btn btn-square btn-sm btn-outline"
+                                        title="Remover Link"
+                                        @click="removeLink(anime.id, link)"
+                                    >
+                                        <TrashBasic class="w-5 h-5" />
+                                    </button>
+                                </div>
                             </li>
 
                             <li>
-                                <form @submit.prevent="updateSavedAnimeLink">
+                                <form @submit.prevent="addLink">
                                     <div
                                         class="flex gap-2"
                                         title="Cole o link do seu site de animes preferido..."
                                     >
                                         <input
-                                            class="w-full max-w-xs input input-sm input-bordered"
+                                            class="w-40 max-w-xs input input-sm input-bordered"
                                             type="text"
                                             placeholder="Cole seu link"
-                                            v-model="update_link_form.link"
+                                            v-model="links_form.new_link"
                                         />
 
                                         <button
                                             class="btn btn-square btn-sm btn-outline btn-primary"
-                                            title="Editar Link"
+                                            title="Adicionar Link"
                                         >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="w-6 h-6"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                />
-                                            </svg>
+                                            <PlusCircle class="w-5 h-5" />
                                         </button>
                                     </div>
                                 </form>
@@ -153,7 +160,7 @@ function removeAnime() {
                                 >
                                     <TrashBasic class="w-5 h-5" />
 
-                                    Remover da lista
+                                    Remover anime
                                 </button>
                             </li>
                         </ul>

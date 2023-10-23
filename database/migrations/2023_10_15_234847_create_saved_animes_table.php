@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('rewatch_count')->default(0);
             $table->integer('episode_count')->default(0);
             $table->boolean('favorite')->default(false);
-            $table->text('link')->nullable();
+            $table->json('links')->nullable();
 
             $table->text('image_cover_url');
             $table->text('image_banner_url')->nullable();

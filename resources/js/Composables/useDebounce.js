@@ -1,6 +1,6 @@
 // Debounce
 let timeoutId;
-export default function debounce(callback, delay) {
+export default function useDebounce(callback, delay) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(callback, delay);
 }

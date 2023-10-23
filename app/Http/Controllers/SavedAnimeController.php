@@ -41,8 +41,11 @@ class SavedAnimeController
 
     public function updateAnimeLink(Request $request)
     {
-        SavedAnime::find($request->id)->update([
-            'link' => $request->link,
+        $anime = SavedAnime::find($request->id);
+        $old_links = $anime->links ?? [];
+
+        $anime->update([
+            'links' => [...$old_links, $request->new_link],
         ]);
 
         Session::flash('success', 'Link salvo com sucesso.');
@@ -56,5 +59,14 @@ class SavedAnimeController
         }
 
         Session::flash('success', 'Anime removido da lista.');
+    }
+
+    public function deleteLink(SavedAnime $anime, Request $request)
+    {
+        $anime->update([
+            'links' => array_diff($anime->links, [$request->link]),
+        ]);
+
+        Session::flash('success', 'Link removido com sucesso.');
     }
 }

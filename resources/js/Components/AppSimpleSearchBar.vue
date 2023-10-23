@@ -1,4 +1,5 @@
 <script setup>
+import useUrl from "@/Composables/useUrl";
 import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
@@ -8,7 +9,7 @@ const props = defineProps({
         default: [],
     },
 });
-const q = ref("");
+const q = ref(useUrl().params.q);
 
 function search() {
     router.visit(route("search", { q: q.value }));
@@ -21,7 +22,7 @@ function search() {
             <div class="input-group">
                 <input
                     type="text"
-                    placeholder="Search…"
+                    placeholder="Pesquise aqui…"
                     class="input input-bordered"
                     v-model="q"
                 />

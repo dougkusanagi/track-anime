@@ -1,13 +1,16 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 
 import AppSimpleSearchBar from "@/Components/AppSimpleSearchBar.vue";
 import AnimeCard from "@/Components/AnimeCard.vue";
+import useUrl from "@/Composables/useUrl";
 
 const props = defineProps({
     animes: Object,
 });
+
+const params = useUrl().params;
 </script>
 
 <template>
@@ -31,7 +34,9 @@ const props = defineProps({
                 <h3
                     class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
                 >
-                    Sua pesquisa
+                    Você pesquisou:
+
+                    <span class="font-normal"> "{{ params.q }}" </span>
                 </h3>
             </div>
 

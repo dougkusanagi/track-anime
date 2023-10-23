@@ -34,6 +34,7 @@ Route::controller(SavedAnimeController::class)->group(function () {
     Route::post('/saved-anime', 'store')->name('saved-anime.store');
     Route::put('/saved-anime/update-episode', 'updateAnimeEpisode')->name('saved-anime.save-episode');
     Route::put('/saved-anime/update-link', 'updateAnimeLink')->name('saved-anime.update-link');
+    Route::put('/saved-anime/delete-link/{anime}', 'deleteLink')->name('saved-anime.delete-link');
     Route::delete('/saved-anime/delete/{anime}', 'destroy')->name('saved-anime.destroy');
 })->middleware(['auth']);
 
