@@ -32,7 +32,7 @@ class SavedAnimeController
 
     public function updateAnimeEpisode(Request $request)
     {
-        SavedAnime::find($request->saved_anime['id'])->update([
+        SavedAnime::find($request->anime['id'])->update([
             'episode_count' => $request->episode_count,
         ]);
 
