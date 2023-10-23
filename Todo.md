@@ -4,7 +4,8 @@
 - [x] Adicionar à lista (Assistindo no Momento)
 - [x] Marcar último Ep assistido
 - [x] Pesquisa por nome
-- [ ] Múltiplos links para assistir
+- [x] Múltiplos links para assistir
+- [ ] Exibir detalhes no card de animes salvos ao passar o mouse (status, etc)
 - [ ] Carrosel para os Top 10 ocuparem só uma linha
 - [ ] Filtros de pesquisa (gênero, ano, SFW, etc)
 - [ ] Criar listas compartilháveis
