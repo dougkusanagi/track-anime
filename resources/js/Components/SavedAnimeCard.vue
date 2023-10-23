@@ -102,7 +102,7 @@ function removeAnime() {
 
                         <ul
                             tabindex="0"
-                            class="p-2 shadow dropdown-content menu bg-base-100 rounded-boxfit"
+                            class="p-2 shadow dropdown-content menu bg-base-100 rounded-box"
                         >
                             <li v-for="link in anime.links">
                                 <div
