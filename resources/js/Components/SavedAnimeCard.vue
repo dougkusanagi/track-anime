@@ -71,7 +71,10 @@ function removeAnime() {
             </div>
 
             <figure>
-                <img class="w-full h-[320px]" :src="anime.image_cover_url" />
+                <img
+                    class="w-full h-[240px] lg:h-[320px]"
+                    :src="anime.image_cover_url"
+                />
             </figure>
         </div>
 
