@@ -1,17 +1,25 @@
 <script setup>
 import { router, useForm } from "@inertiajs/vue3";
-import useDebounce from "@/Composables/useDebounce.js";
+import useDebounce from "@/Composables/useDebounce";
 import useUrl from "@/Composables/useUrl";
+import useScreen from "@/Composables/useScreen";
 
 import Ellipsis from "@/Icons/HeroIcons/Ellipsis.vue";
 import ArrowTopRightSquare from "@/Icons/HeroIcons/ArrowTopRightSquare.vue";
 import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
 import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
+import { computed } from "vue";
 
-const props = defineProps({ anime: Object });
+const props = defineProps({
+    anime: Object,
+    index: Number,
+});
 const links_form = useForm({
     id: props.anime.id,
     new_link: "",
+});
+const dropdown_position = computed(() => {
+    return useScreen().isMobile() && props.index % 2 === 0 ? false : true;
 });
 
 function updateSavedAnimeEpisode(anime, episode_count) {
@@ -95,7 +103,10 @@ function removeAnime() {
                         "
                     />
 
-                    <div class="dropdown dropdown-end">
+                    <div
+                        class="dropdown"
+                        :class="{ 'dropdown-end': dropdown_position }"
+                    >
                         <label
                             tabindex="0"
                             class="!rounded-tr-none btn btn-primary btn-square btn-sm join-item"
@@ -105,7 +116,8 @@ function removeAnime() {
 
                         <ul
                             tabindex="0"
-                            class="p-2 shadow dropdown-content menu bg-base-100 rounded-box"
+                            class="z-40 p-2 shadow dropdown-content menu bg-base-100 rounded-box"
+                            :class="{ '-ml-12': !dropdown_position }"
                         >
                             <li v-for="link in anime.links">
                                 <div

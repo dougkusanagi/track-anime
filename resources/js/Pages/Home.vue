@@ -5,6 +5,8 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import AppSimpleSearchBar from "@/Components/AppSimpleSearchBar.vue";
 import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import useScreen from "@/Composables/useScreen";
 
 const props = defineProps({
     animes: Object,
@@ -32,7 +34,40 @@ const props = defineProps({
         </template>
 
         <div class="pt-12 pb-48">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
+            <div class="">
+                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div
+                        class="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
+                    >
+                        <div class="flex justify-between p-6 pb-0 lg:px-8">
+                            <h3
+                                class="flex items-center font-semibold leading-tight text-gray-800 dark:text-gray-200"
+                            >
+                                <Link href="#" class="text-lg">
+                                    Minha Lista
+                                </Link>
+                            </h3>
+
+                            <Link href="#" class="text-xs btn btn-link">
+                                Ver todas
+                            </Link>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-2 gap-6 p-6 mx-auto md:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
+                        >
+                            <SavedAnimeCard
+                                v-for="(anime, index) in saved_animes"
+                                :anime="anime"
+                                :index="index"
+                                :key="index"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-auto mt-12 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
                 <h3
                     class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
                     id="top-10"
@@ -91,37 +126,12 @@ const props = defineProps({
                     </div>
                 </div>
             </div>
-
-            <div class="mt-6">
-                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div
-                        class="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
-                    >
-                        <div class="flex justify-between p-6 pb-0 lg:px-4">
-                            <h3
-                                class="font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                            >
-                                <Link href="#" class="text-lg btn btn-link">
-                                    Minha Lista
-                                </Link>
-                            </h3>
-
-                            <Link href="#" class="text-xs btn btn-link">
-                                Ver todas
-                            </Link>
-                        </div>
-
-                        <div
-                            class="grid grid-cols-2 gap-6 p-6 mx-auto md:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
-                        >
-                            <SavedAnimeCard
-                                v-for="anime in saved_animes"
-                                :anime="anime"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+<style>
+.swiper-wrapper {
+    @apply grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 md:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg;
+}
+</style>

@@ -1,8 +1,10 @@
 const useUrl = function () {
     return {
         params: Object.fromEntries(new URLSearchParams(location.search)),
-        domain: (url) => (url ? new URL(url).hostname : window.location.host),
-        isUrl: (url) => {
+        domain(url) {
+            return url ? new URL(url).hostname : window.location.host;
+        },
+        isUrl(url) {
             try {
                 return Boolean(new URL(url));
             } catch {
