@@ -11,10 +11,11 @@ class SavedAnimeController
 {
     public function store(Request $request)
     {
-        $anime = JikanMoeAnimesService::byMalId($request->mal_id)['data'] ?? null;
+        $anime = JikanMoeAnimesService::findByMalId($request->mal_id)['data'] ?? null;
 
         if (!$anime) {
-            return to_route('home')->with('error', 'Anime não encontrado.');
+            return to_route('home')
+                ->with('error', 'Anime não encontrado.');
         }
 
         /** @var \App\Models\User */
@@ -32,16 +33,17 @@ class SavedAnimeController
 
     public function updateAnimeEpisode(Request $request)
     {
-        SavedAnime::find($request->anime['id'])->update([
-            'episode_count' => $request->episode_count,
-        ]);
+        SavedAnime::findOrFail($request->anime['id'])
+            ->update([
+                'episode_count' => $request->episode_count ?? 0,
+            ]);
 
         Session::flash('success', 'Episódio atualizado com sucesso.');
     }
 
     public function updateAnimeLink(Request $request)
     {
-        $anime = SavedAnime::find($request->id);
+        $anime = SavedAnime::findOrFail($request->id);
         $old_links = $anime->links ?? [];
 
         $anime->update([
