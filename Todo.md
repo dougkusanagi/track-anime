@@ -8,7 +8,8 @@
 - [ ] Design apelativo
 - [ ] Colocar links do anime em ordem alfabética
 - [ ] Ordenar lista por último assistido (updated_at)
-- [ ] Exibir detalhes no card de animes salvos ao passar o mouse (status, etc)
+- [ ] Exibir detalhes no card de animes salvos ao clicar (status, etc)
+- [ ] Calendário mostrando cada anime do dia da semana na temporada atual
 - [ ] Carrosel para os Top 10 ocuparem só uma linha
 - [ ] Filtros de pesquisa (gênero, ano, SFW, etc)
 - [ ] Notificação quando sair episódio novo
