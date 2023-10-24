@@ -49,7 +49,7 @@ class JikanMoeAnimesService
             );
     }
 
-    public static function byMalId(int $mal_id)
+    public static function findByMalId(int $mal_id)
     {
         return cache()
             ->remember(
