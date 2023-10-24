@@ -11,5 +11,6 @@
 - [ ] Exibir detalhes no card de animes salvos ao passar o mouse (status, etc)
 - [ ] Carrosel para os Top 10 ocuparem só uma linha
 - [ ] Filtros de pesquisa (gênero, ano, SFW, etc)
+- [ ] Notificação quando sair episódio novo
 - [ ] Criar listas compartilháveis
 - [ ] Talvez expandir para séries e filmes
