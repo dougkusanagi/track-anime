@@ -8,6 +8,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import NProgress from "nprogress";
 import Toast from "vue-toastification";
+import "flowbite";
 
 router.on("start", () => NProgress.start());
 router.on("finish", () => NProgress.done());

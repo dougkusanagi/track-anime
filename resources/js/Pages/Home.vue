@@ -1,12 +1,9 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, router } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 
-import AppSimpleSearchBar from "@/Components/AppSimpleSearchBar.vue";
-import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
-import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import useScreen from "@/Composables/useScreen";
+import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
+import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
+import Ellipsis from "@/Icons/HeroIcons/Ellipsis.vue";
 
 const props = defineProps({
     animes: Object,
@@ -20,118 +17,82 @@ const props = defineProps({
 <template>
     <Head title="Home" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2
-                    class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                >
-                    Home
-                </h2>
+    <NewAuthLayout>
+        <!-- <button
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            type="button"
+            data-drawer-target="drawer-example"
+            data-drawer-show="drawer-example"
+            aria-controls="drawer-example"
+        >
+            Show drawer
+        </button> -->
 
-                <AppSimpleSearchBar />
-            </div>
-        </template>
+        <div class="mt-16 ml-12">
+            <h2 class="pb-3 text-2xl border-b border-white">Minha Lista</h2>
 
-        <div class="pt-12 pb-48">
-            <div class="">
-                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div
-                        class="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
+            <div class="flex gap-8">
+                <div class="flex items-center gap-2 mt-6">
+                    <label
+                        for="orderBy"
+                        class="block text-sm font-medium dark:text-white min-w-fit"
                     >
-                        <div class="flex justify-between p-6 pb-0 lg:px-8">
-                            <h3
-                                class="flex items-center font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                            >
-                                <Link href="#" class="text-lg">
-                                    Minha Lista
-                                </Link>
-                            </h3>
+                        ORDENAR POR:
+                    </label>
 
-                            <Link href="#" class="text-xs btn btn-link">
-                                Ver todas
-                            </Link>
-                        </div>
+                    <AnimeSavedFilterSelect
+                        id="orderBy"
+                        :options="[{ label: 'Todos', value: '' }]"
+                    />
+                </div>
 
-                        <div
-                            class="grid grid-cols-2 gap-6 p-6 mx-auto md:grid-cols-5 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
-                        >
-                            <SavedAnimeCard
-                                v-for="(anime, index) in saved_animes"
-                                :anime="anime"
-                                :index="index"
-                                :key="index"
-                            />
-                        </div>
-                    </div>
+                <div class="flex items-center gap-2 mt-6">
+                    <label
+                        for="gender"
+                        class="flex items-center gap-2 text-sm font-medium dark:text-white min-w-fit"
+                    >
+                        GÊNEROS:
+
+                        <AnimeSavedFilterSelect
+                            id="gender"
+                            :options="[{ label: 'Todos', value: '' }]"
+                        />
+                    </label>
                 </div>
             </div>
 
-            <div class="mx-auto mt-12 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
-                <h3
-                    class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                    id="top-10"
-                >
-                    # 10 Mais Populares
-                </h3>
-            </div>
+            <div class="mt-6">
+                <div class="w-fit">
+                    <p>{{ animes.data[1].title }}</p>
 
-            <div
-                class="grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 md:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg"
-            >
-                <div
-                    class="shadow-xl card card-compact bg-base-200"
-                    v-for="anime in animes.data"
-                    :title="anime.title"
-                    :key="anime.id"
-                >
-                    <div>
-                        <div
-                            class="absolute flex flex-col justify-end group-hover:justify-between w-full bottom-[48px] p-2 h-36"
-                        >
-                            <h4
-                                class="z-10 text-xs font-black text-center text-white card-title line-clamp-3"
-                            >
-                                {{ anime.title }}
-                            </h4>
+                    <img
+                        class="w-40 h-60"
+                        :src="animes.data[1].images.webp.image_url"
+                        alt=""
+                    />
 
-                            <div
-                                class="absolute inset-0 opacity-80 bg-gradient-to-t from-black via-black to-transparent"
-                            ></div>
-                        </div>
-                    </div>
+                    <div class="flex items-center">
+                        <button class="bg-[#1D0D80] w-7 h-8 rounded-bl-lg">
+                            -
+                        </button>
 
-                    <figure>
-                        <img
-                            class="w-full h-[170px] object-cover"
-                            :src="anime.images.webp.image_url"
+                        <input
+                            class="flex-1 w-16 bg-[#140A4F] border-none h-8"
+                            type="text"
                         />
-                    </figure>
 
-                    <div
-                        class="flex flex-col items-center justify-between !p-2 card-body"
-                    >
-                        <div class="min-w-full card-actions">
-                            <Link
-                                method="post"
-                                as="button"
-                                :href="route('saved-anime.store')"
-                                :data="{ mal_id: anime.mal_id }"
-                                class="flex-1 col-span-1 btn btn-square btn-outline btn-primary btn-sm"
-                                title="Adicionar à lista"
-                            >
-                                <PlusCircle class="w-5 h-5" />
-                            </Link>
-                        </div>
+                        <button class="bg-[#1D0D80] w-7 h-8">+</button>
+
+                        <button
+                            class="flex items-center justify-center h-8 bg-[#4712DD] rounded-br-lg w-7"
+                        >
+                            <Ellipsis />
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
-</template>
 
-<style>
-.swiper-wrapper {
-    @apply grid grid-cols-3 gap-4 px-6 mx-auto mt-6 mb-12 md:grid-cols-10 max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg;
-}
-</style>
+        <!-- <p>{{ animes }}</p> -->
+    </NewAuthLayout>
+</template>
