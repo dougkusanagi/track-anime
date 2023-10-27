@@ -4,6 +4,7 @@ import { ref } from "vue";
 import House from "@/Icons/HeroIcons/House.vue";
 import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
+import { Link } from "@inertiajs/vue3";
 
 const isOpen = ref(false);
 
@@ -42,14 +43,14 @@ const links = [
         <div class="absolute inset-0 backdrop-blur-xl bg-white/10 -z-10"></div>
 
         <div class="flex items-center justify-between px-4 py-3 sm:p-0">
-            <div class="flex items-center gap-2">
+            <Link :href="route('home')" class="flex items-center gap-2">
                 <img
                     class="h-12 mt-2"
                     src="/logo-anime-track.svg"
                     alt="Workcation"
                 />
                 <span class="text-xl">TRACK ANIME</span>
-            </div>
+            </Link>
 
             <button
                 @click="isOpen = !isOpen"
