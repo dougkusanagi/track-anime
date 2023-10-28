@@ -5,59 +5,58 @@ import House from "@/Icons/HeroIcons/House.vue";
 import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
 import { Link } from "@inertiajs/vue3";
+import CaretDown from "@/Icons/CaretDown.vue";
 
 const isOpen = ref(false);
 
 const links = [
     {
         name: "Início",
-        href: "#",
+        href: route("home"),
         icon: House,
     },
     {
         name: "Pesquisar",
-        href: "#",
+        href: route("search"),
         icon: MagnifyingGlass,
-    },
-    {
-        name: "",
-        href: "#",
-        icon: UserCircle,
     },
 ];
 </script>
 
 <template>
     <header
-        class="fixed top-0 w-full border-b-2 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3"
+        class="fixed top-0 w-full border-b-2 sm:flex sm:items-center sm:justify-between sm:px-4 sm:py-3"
         style="
             border-image: linear-gradient(
                     90deg,
-                    rgba(255, 255, 255, 0.25),
-                    rgba(255, 255, 255, 0.1),
-                    rgba(255, 255, 255, 0.25)
+                    rgba(255, 255, 255, 0.12),
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.12)
                 )
                 1;
         "
     >
-        <div class="absolute inset-0 backdrop-blur-xl bg-white/10 -z-10"></div>
+        <div
+            class="absolute inset-0 -z-10 bg-gradient-to-b from-white/10 to-black/10 backdrop-blur-xl"
+        ></div>
 
         <div class="flex items-center justify-between px-4 py-3 sm:p-0">
             <Link :href="route('home')" class="flex items-center gap-2">
                 <img
-                    class="h-12 mt-2"
+                    class="mt-2 h-12"
                     src="/logo-anime-track.svg"
                     alt="Workcation"
                 />
-                <span class="text-xl">TRACK ANIME</span>
+
+                <span class="text-2xl font-medium text-white">TRACK ANIME</span>
             </Link>
 
             <button
                 @click="isOpen = !isOpen"
                 type="button"
-                class="block p-2 text-gray-500 rounded hover:shadow-xl hover:bg-indigo-600 hover:shadow-indigo-600/60 hover:text-white sm:hidden"
+                class="block rounded p-2 text-gray-500 hover:bg-indigo-600 hover:text-white hover:shadow-xl hover:shadow-indigo-600/60 sm:hidden"
             >
-                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
                     <path
                         v-if="isOpen"
                         fill-rule="evenodd"
@@ -75,26 +74,27 @@ const links = [
 
         <nav
             :class="isOpen ? 'block' : 'hidden'"
-            class="gap-10 px-2 pt-2 pb-4 border-t-2 sm:border-none sm: sm:flex sm:p-0"
-            style="
-                border-image: linear-gradient(
-                        90deg,
-                        rgba(255, 255, 255, 0.25),
-                        rgba(255, 255, 255, 0.1),
-                        rgba(255, 255, 255, 0.25)
-                    )
-                    1;
-            "
+            class="gap-10 border-t-2 px-2 pb-4 pt-2 sm:flex sm:border-none sm:p-0"
         >
-            <a
-                href="#"
-                class="flex items-center gap-2 px-3 py-3 font-semibold text-white rounded hover:shadow-xl hover:bg-indigo-700 hover:shadow-indigo-700/60"
+            <Link
+                :href="link.href"
+                class="flex items-center gap-2 rounded px-4 py-3 font-semibold text-white hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-700/60"
                 v-for="link in links"
             >
                 <component :is="link.icon" />
 
                 {{ link.name }}
-            </a>
+            </Link>
+
+            <div class="border-l-2 border-white/20 pl-4">
+                <button
+                    class="flex items-center gap-2 rounded px-4 py-3 font-semibold text-white hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-700/60"
+                >
+                    <UserCircle />
+
+                    <CaretDown />
+                </button>
+            </div>
         </nav>
     </header>
 </template>

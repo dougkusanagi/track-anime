@@ -6,9 +6,13 @@ const props = defineProps({
 
 <template>
     <select
-        class="block p-2 text-sm text-gray-900 border border-gray-300 rounded w-44 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class="block w-44 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold outline-none focus:ring-transparent"
     >
-        <option v-for="option in options" :value="option.value">
+        <option
+            v-for="option in options"
+            :value="option.value"
+            style="padding: 12px"
+        >
             {{ option.label }}
         </option>
     </select>
