@@ -10,6 +10,7 @@
 - [ ] Cards dos animes com visual de vidro, bordas com bradiente branco para transparente e as imagens com bordas sombreadas como se fossem sumindo e talvez um efeito de brilho ao passar o mouse
 - [ ] Colocar o fundo dinâmico pro usuário escolher
 - [ ] Botão para expandir a lista para não precisar rolar para direita procurando
+- [ ] Filtro pra pegar só animes da temporada atual
 - [ ] Design apelativo
 - [ ] Colocar links do anime em ordem alfabética
 - [ ] Ordenar lista por último assistido (updated_at)
