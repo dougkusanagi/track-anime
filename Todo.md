@@ -11,6 +11,7 @@
 - [ ] Colocar o fundo dinâmico pro usuário escolher
 - [ ] Botão para expandir a lista para não precisar rolar para direita procurando
 - [ ] Filtro pra pegar só animes da temporada atual
+- [ ] Subir contagem de ep ao clicar em assistir
 - [ ] Design apelativo
 - [ ] Colocar links do anime em ordem alfabética
 - [ ] Ordenar lista por último assistido (updated_at)
