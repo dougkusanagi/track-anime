@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnimeApiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedAnimeController;
@@ -27,8 +28,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/home', HomeController::class)->middleware(['auth'])->name('home');
-Route::get('/search', SearchController::class)->middleware(['auth'])->name('search');
+Route::get('/home', HomeController::class)->name('home');
+Route::get('/search', SearchController::class)->name('search');
 
 Route::controller(SavedAnimeController::class)->group(function () {
     Route::post('/saved-anime', 'store')->name('saved-anime.store');
@@ -36,6 +37,10 @@ Route::controller(SavedAnimeController::class)->group(function () {
     Route::put('/saved-anime/update-link', 'updateAnimeLink')->name('saved-anime.update-link');
     Route::put('/saved-anime/delete-link/{anime}', 'deleteLink')->name('saved-anime.delete-link');
     Route::delete('/saved-anime/delete/{anime}', 'destroy')->name('saved-anime.destroy');
+})->middleware(['auth']);
+
+Route::controller(AnimeApiController::class)->group(function () {
+    Route::get('/anime-details/{mal_id}', 'getByMalId')->name('anime-details');
 })->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
