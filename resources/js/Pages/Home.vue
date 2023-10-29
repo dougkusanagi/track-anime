@@ -1,6 +1,8 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
+import axios from "axios";
+import { Drawer } from "flowbite";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 
@@ -22,23 +24,34 @@ const props = defineProps({
     },
 });
 
-const animeDetail = ref(props.animes.data[0]);
+const drawer_anime_details_ref = ref(null);
 
-onMounted(() => initFlowbite());
+const anime_with_detail = ref(null);
 
-function openAnimeDetails(anime) {
-    alert("pesquisar animes na api e guardar cache");
-    animeDetail.value = anime;
-}
+let drawer_anime_details = null;
+
+const openAnimeDetails = async (clicked_anime) => {
+    const anime_details = await axios.get(
+        route("anime-details", clicked_anime.mal_id)
+    );
+
+    clicked_anime.detail = anime_details.data;
+    anime_with_detail.value = clicked_anime;
+
+    if (!drawer_anime_details) {
+        drawer_anime_details = new Drawer(drawer_anime_details_ref);
+    }
+};
 </script>
 
 <template>
     <Head title="Home" />
 
     <NewAuthLayout>
-        <AnimeDetailsDrawer :anime="animeDetail" />
-
-        <!-- <pre>{{ animes.data[0] }}</pre> -->
+        <AnimeDetailsDrawer
+            ref="drawer_anime_details"
+            :anime="anime_with_detail"
+        />
 
         <div class="ml-6 mt-16 sm:ml-12">
             <h2
@@ -48,11 +61,28 @@ function openAnimeDetails(anime) {
             </h2>
 
             <div class="mt-6">
-                <div class="flex flex-col gap-3 sm:flex-row sm:gap-8">
+                <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
                     <HomeFilterSelect>
                         <label
                             for="orderBy"
-                            class="block min-w-fit text-sm font-medium text-white/50"
+                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                        >
+                            Pesquisar:
+                        </label>
+
+                        <input
+                            id="q"
+                            type="text"
+                            class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
+                            placeholder="Nome do Anime..."
+                            disabled
+                        />
+                    </HomeFilterSelect>
+
+                    <HomeFilterSelect>
+                        <label
+                            for="orderBy"
+                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
                         >
                             Ordenar por:
                         </label>
@@ -60,13 +90,14 @@ function openAnimeDetails(anime) {
                         <AnimeSavedFilterSelect
                             id="orderBy"
                             :options="[{ label: 'Alfabético', value: '' }]"
+                            disabled
                         />
                     </HomeFilterSelect>
 
                     <HomeFilterSelect>
                         <label
                             for="gender"
-                            class="block min-w-fit text-sm font-medium text-white/50"
+                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
                         >
                             Gêneros:
                         </label>
@@ -74,6 +105,7 @@ function openAnimeDetails(anime) {
                         <AnimeSavedFilterSelect
                             id="gender"
                             :options="[{ label: 'Todos', value: '' }]"
+                            disabled
                         />
                     </HomeFilterSelect>
                 </div>
@@ -81,8 +113,6 @@ function openAnimeDetails(anime) {
 
             <div class="mt-6 max-w-full">
                 <div class="flex items-end gap-4 overflow-x-auto py-2">
-                    <!-- <pre>{{ saved_animes }}</pre> -->
-
                     <div
                         class="flex w-40 flex-col rounded-xl"
                         v-for="anime in saved_animes"
@@ -185,12 +215,14 @@ function openAnimeDetails(anime) {
                                         </div>
                                     </a>
                                 </div>
+
                                 <div
                                     class="700 flex items-center justify-between gap-1 py-2"
                                 >
                                     <AppInputBasic
                                         placeholder="Cole seu link"
                                     />
+
                                     <button
                                         type="button"
                                         class="flex h-10 w-10 items-center justify-center rounded-lg border border-indigo-700 text-center text-sm font-black text-indigo-700 hover:bg-indigo-600 hover:text-white hover:shadow-lg hover:shadow-indigo-700/80"

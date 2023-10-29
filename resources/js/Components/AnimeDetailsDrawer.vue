@@ -1,8 +1,16 @@
 <script setup>
 import AppInputBasic from "./AppInputBasic.vue";
 
+import StarOutline from "@/Icons/HeroIcons/StarOutline.vue";
+import StarSolid from "@/Icons/HeroIcons/StarSolid.vue";
+import HeartOutline from "@/Icons/HeroIcons/HeartOutline.vue";
+import HeartSolid from "@/Icons/HeroIcons/HeartSolid.vue";
+
 const props = defineProps({
-    anime: Object,
+    anime: {
+        type: Object,
+        default: {},
+    },
 });
 </script>
 
@@ -14,132 +22,157 @@ const props = defineProps({
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
-        <h5
-            id="drawer-label"
-            class="mb-4 inline-flex items-center text-base font-semibold text-white"
-        >
-            {{ anime.title }}
-        </h5>
-
-        <button
-            type="button"
-            data-drawer-hide="drawer-saved-anime-details"
-            aria-controls="drawer-saved-anime-details"
-            class="absolute right-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-            <svg
-                class="h-3 w-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 14"
-            >
-                <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                />
-            </svg>
-
-            <span class="sr-only">Close menu</span>
-        </button>
-
-        <!-- <pre>{{ anime }}</pre> -->
-
-        <div class="flex">
-            <img :src="anime.image_cover_url" alt="" />
-
-            <div class="flex w-full flex-col justify-between">
-                <div
-                    class="grid w-full grid-cols-3 items-center divide-x-2 divide-white/20"
+        <div v-if="anime">
+            <div class="mb-10">
+                <button
+                    type="button"
+                    data-drawer-hide="drawer-saved-anime-details"
+                    aria-controls="drawer-saved-anime-details"
+                    class="absolute right-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                    <span class="flex justify-center">2023</span>
+                    <svg
+                        class="h-3 w-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                    </svg>
+                    <span class="sr-only">Close menu</span>
+                </button>
+            </div>
 
-                    <div class="flex justify-center">
-                        <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="h-6 w-6"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                                />
-                            </svg>
+            <!-- <pre>{{ anime.detail }}</pre> -->
+
+            <div class="flex">
+                <img :src="anime.detail.images.webp.image_url" alt="" />
+
+                <div class="flex flex-1 flex-col justify-between">
+                    <div
+                        class="grid w-full grid-cols-3 items-center divide-x-2 divide-white/20"
+                    >
+                        <span
+                            class="flex justify-center text-lg font-black text-white"
+                        >
+                            {{ anime.detail.year }}
+                        </span>
+
+                        <div class="flex items-center justify-center gap-1">
+                            <StarOutline class="hidden" />
+
+                            <StarSolid class="fill-yellow-400" />
+
+                            <span class="text-lg font-black text-white">
+                                {{ anime.detail.score }}
+                            </span>
                         </div>
 
-                        <div class="hidden">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="h-6 w-6"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
+                        <div class="flex justify-center">
+                            <HeartSolid class="hidden" />
+
+                            <HeartOutline class="text-red-600" />
                         </div>
                     </div>
 
-                    <div class="flex justify-center">
-                        <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="h-6 w-6"
+                    <div>
+                        <div class="mx-4 flex gap-2">
+                            <span
+                                class="rounded-lg border border-emerald-600/80 bg-emerald-600/50 px-2 py-1 text-xs font-bold"
+                                v-if="anime.detail.airing"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                />
-                            </svg>
+                                Em Exibição
+                            </span>
+
+                            <span
+                                class="rounded-lg border border-teal-600/80 bg-teal-600/50 px-2 py-1 text-xs font-bold"
+                                v-else
+                            >
+                                Finalizado
+                            </span>
                         </div>
 
-                        <div class="hidden">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="h-6 w-6"
+                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                            <label for="list" class="text-white/50">
+                                Lista
+                            </label>
+
+                            <select
+                                class="rounded-lg border-white/10 bg-white/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40"
                             >
-                                <path
-                                    d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
-                                />
-                            </svg>
+                                <option value="">Assistindo</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                            <label for="rewatched" class="text-white/50">
+                                Vezes Reassistidas
+                            </label>
+
+                            <AppInputBasic
+                                id="rewatched"
+                                v-model="anime.rewatch_count"
+                                type="number"
+                                min="0"
+                            />
+                        </div>
+
+                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                            <label for="rating" class="text-white/50">
+                                Dê sua nota
+                            </label>
+
+                            <AppInputBasic
+                                id="rating"
+                                type="number"
+                                min="0"
+                                max="10"
+                            />
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div>
-                    <div class="mt-6 flex flex-col gap-1 px-4">
-                        <label for="" class="text-white">Lista</label>
-                        <AppInputBasic />
-                    </div>
+            <div class="mt-6">
+                <h4
+                    id="drawer-label"
+                    class="inline-flex items-center text-4xl font-semibold text-white"
+                >
+                    {{ anime.detail.title }}
+                </h4>
 
-                    <div class="mt-6 flex flex-col gap-1 px-4">
-                        <label for="" class="text-white">Reassistido</label>
-                        <AppInputBasic />
-                    </div>
+                <div class="mt-6 flex flex-col">
+                    <span class="text-sm text-white/40"> Gêneros: </span>
 
-                    <div class="mt-6 flex flex-col gap-1 px-4">
-                        <label for="" class="text-white">Dê sua nota</label>
-                        <AppInputBasic />
+                    <div class="mt-2">
+                        <span
+                            class="mr-2 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/80"
+                            v-for="genre in anime.detail.genres"
+                        >
+                            {{ genre.name }}
+                        </span>
                     </div>
                 </div>
+
+                <div class="mt-6 flex flex-col">
+                    <span class="text-sm text-white/40">Temporada:</span>
+
+                    <div class="mt-2">
+                        <span class="mr-2 text-white/80">
+                            {{ anime.detail.season }}
+                        </span>
+                    </div>
+                </div>
+
+                <p class="mt-6 text-lg text-white">
+                    {{ anime.detail.synopsis }}
+                </p>
             </div>
         </div>
     </div>

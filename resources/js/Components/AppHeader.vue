@@ -25,7 +25,7 @@ const links = [
 
 <template>
     <header
-        class="fixed top-0 w-full border-b-2 sm:flex sm:items-center sm:justify-between sm:px-4 sm:py-3"
+        class="fixed top-0 w-full border-b-2 px-10 sm:flex sm:items-center sm:justify-between sm:py-3"
         style="
             border-image: linear-gradient(
                     90deg,
