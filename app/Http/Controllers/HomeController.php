@@ -9,9 +9,13 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
+        $saved_animes = auth()->user()
+            ? SavedAnime::where('user_id', auth()->user()->id)->get()
+            : [];
+
         return inertia('Home', [
             'animes' => JikanMoeAnimesService::getTopTen(),
-            'saved_animes' => SavedAnime::where('user_id', auth()->user()->id)->get(),
+            'saved_animes' => $saved_animes,
         ]);
     }
 }

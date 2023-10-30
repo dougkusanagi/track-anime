@@ -6,6 +6,7 @@ import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
 import { Link } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
+import DropdownUserMenu from "./DropdownUserMenu.vue";
 
 const isOpen = ref(false);
 
@@ -25,7 +26,7 @@ const links = [
 
 <template>
     <header
-        class="fixed top-0 w-full border-b-2 px-10 sm:flex sm:items-center sm:justify-between sm:py-3"
+        class="fixed top-0 z-10 w-full border-b-2 px-10 sm:flex sm:items-center sm:justify-between sm:py-3"
         style="
             border-image: linear-gradient(
                     90deg,
@@ -88,12 +89,16 @@ const links = [
 
             <div class="border-l-2 border-white/20 pl-4">
                 <button
+                    id="dropdownUserMenuButton"
+                    data-dropdown-toggle="dropdownUserMenu"
                     class="flex items-center gap-2 rounded px-4 py-3 font-semibold text-white hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-700/60"
                 >
                     <UserCircle />
 
                     <CaretDown />
                 </button>
+
+                <DropdownUserMenu />
             </div>
         </nav>
     </header>

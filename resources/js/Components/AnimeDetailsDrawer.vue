@@ -15,7 +15,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <!-- drawer component -->
+    <!-- <pre>{{ anime }}</pre> -->
+
     <div
         id="drawer-saved-anime-details"
         class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-white/5 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
@@ -104,6 +105,7 @@ const props = defineProps({
                             </label>
 
                             <select
+                                id="list"
                                 class="rounded-lg border-white/10 bg-white/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40"
                             >
                                 <option value="">Assistindo</option>

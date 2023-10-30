@@ -1,54 +1,28 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, router } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
+import { ref, onMounted } from "vue";
 
-import AppSimpleSearchBar from "@/Components/AppSimpleSearchBar.vue";
-import AnimeCard from "@/Components/AnimeCard.vue";
-import useUrl from "@/Composables/useUrl";
+import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 
-const props = defineProps({
-    animes: Object,
-});
+const query_input = ref(null);
 
-const params = useUrl().params;
+onMounted(() => query_input.value.focus());
 </script>
 
 <template>
-    <Head title="Home" />
+    <Head title="Pesquisa" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2
-                    class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                >
-                    Home
-                </h2>
-
-                <AppSimpleSearchBar />
-            </div>
-        </template>
-
-        <div class="pt-12 pb-48">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 sm:rounded-lg">
-                <h3
-                    class="px-6 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-                >
-                    Você pesquisou:
-
-                    <span class="font-normal"> "{{ params.q }}" </span>
-                </h3>
-            </div>
-
-            <div
-                class="grid grid-cols-2 gap-4 px-6 mx-auto mt-6 mb-12 sm:grid-cols-6 max-w-7xl sm:px-6 md:px-8 sm:rounded-lg"
-            >
-                <AnimeCard
-                    v-for="anime in animes.data"
-                    :key="anime.id"
-                    :anime="anime"
+    <NewAuthLayout>
+        <div class="ml-6 mt-16 sm:ml-12">
+            <div class="w-full border-b-2 border-white/40 pb-2">
+                <input
+                    ref="query_input"
+                    id="q"
+                    type="text"
+                    class="block min-w-full appearance-none rounded border-b-2 border-none border-white/40 bg-transparent text-3xl text-white text-white/80 outline-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
+                    placeholder="Digite o nome de um anime..."
                 />
             </div>
         </div>
-    </AuthenticatedLayout>
+    </NewAuthLayout>
 </template>

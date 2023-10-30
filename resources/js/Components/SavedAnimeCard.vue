@@ -1,26 +1,45 @@
 <script setup>
 import { router, useForm } from "@inertiajs/vue3";
+
 import useDebounce from "@/Composables/useDebounce";
 import useUrl from "@/Composables/useUrl";
-import useScreen from "@/Composables/useScreen";
+import { useSelectedAnime } from "@/Stores/useSelectedAnime.js";
 
-import Ellipsis from "@/Icons/HeroIcons/Ellipsis.vue";
+import AppInputBasic from "@/Components/AppInputBasic.vue";
+import ButtonChangeEp from "@/Components/ButtonChangeEp.vue";
+
 import ArrowTopRightSquare from "@/Icons/HeroIcons/ArrowTopRightSquare.vue";
-import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
+import Ellipsis from "@/Icons/HeroIcons/Ellipsis.vue";
 import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
-import { computed } from "vue";
+import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
+import Minus from "@/Icons/HeroIcons/Minus.vue";
+import Plus from "@/Icons/HeroIcons/Plus.vue";
+import { ref } from "vue";
 
 const props = defineProps({
     anime: Object,
-    index: Number,
 });
-const links_form = useForm({
-    id: props.anime.id,
-    new_link: "",
-});
-const dropdown_position = computed(() => {
-    return useScreen().isMobile() && props.index % 2 === 0 ? false : true;
-});
+
+const new_link = ref("");
+const selected_anime_store = useSelectedAnime();
+let drawer_anime_details = null;
+
+const openAnimeDetails = async (clicked_anime) => {
+    const anime_details = await axios.get(
+        route("anime-details", clicked_anime.mal_id)
+    );
+
+    clicked_anime.detail = anime_details.data;
+    selected_anime_store.selected_anime = clicked_anime;
+
+    if (!drawer_anime_details) {
+        drawer_anime_details = new Drawer(
+            document.getElementById("drawer-saved-anime-details")
+        );
+    }
+
+    drawer_anime_details.show();
+};
 
 function updateSavedAnimeEpisode(anime, episode_count) {
     useDebounce(() => {
@@ -32,18 +51,36 @@ function updateSavedAnimeEpisode(anime, episode_count) {
     }, 700);
 }
 
+function increaseSavedAnimeEpisode(anime) {
+    anime.episode_count += 1;
+    updateSavedAnimeEpisode(anime, anime.episode_count);
+}
+
+function decreaseSavedAnimeEpisode(anime) {
+    anime.episode_count -= 1;
+    updateSavedAnimeEpisode(anime, anime.episode_count);
+}
+
 function addLink() {
-    if (!useUrl().isUrl(links_form.new_link)) {
-        links_form.new_link = "";
+    console.log(new_link.value);
+    if (!useUrl().isUrl(new_link.value)) {
+        new_link.value = "";
         alert("URL inválida");
         return;
     }
 
-    router.put(route("saved-anime.update-link"), links_form, {
-        preserveScroll: true,
-    });
+    router.put(
+        route("saved-anime.update-link"),
+        {
+            id: props.anime.id,
+            new_link: new_link.value,
+        },
+        {
+            preserveScroll: true,
+        }
+    );
 
-    links_form.new_link = "";
+    new_link.value = "";
 }
 
 function removeLink(anime, link) {
@@ -62,124 +99,114 @@ function removeAnime() {
 </script>
 
 <template>
-    <div class="shadow-xl group card card-compact">
-        <div>
-            <div
-                class="absolute flex flex-col justify-end w-full bottom-[35px] p-2 h-36"
+    <div class="flex w-40 flex-col rounded-xl">
+        <p
+            class="card-title z-10 line-clamp-3 w-full p-1 text-center text-xs font-black text-white"
+        >
+            {{ anime.title }}
+        </p>
+
+        <button
+            class="outline outline-2 outline-transparent focus:shadow-xl focus:shadow-indigo-600 focus:outline-2 focus:outline-indigo-600"
+            @click="openAnimeDetails(anime)"
+        >
+            <img
+                class="h-60 w-full object-cover"
+                :src="anime.image_cover_url"
+                alt=""
+            />
+        </button>
+
+        <div class="flex w-full items-center">
+            <ButtonChangeEp
+                class="flex h-8 w-8 items-center justify-center rounded-bl-lg bg-[#1D0D80]"
+                @click="decreaseSavedAnimeEpisode(anime)"
             >
-                <h4
-                    class="z-10 text-xs font-black text-center text-white card-title line-clamp-3"
-                >
-                    {{ anime.title }}
-                </h4>
+                <Minus />
+            </ButtonChangeEp>
 
+            <input
+                class="h-8 w-16 flex-1 border-none bg-[#140A4F] text-center text-sm font-medium focus:ring-white/20"
+                type="text"
+                placeholder="ex: 8"
+                :value="anime.episode_count"
+                @input="updateSavedAnimeEpisode(anime, $event.target.value)"
+            />
+
+            <ButtonChangeEp @click="increaseSavedAnimeEpisode(anime)">
+                <Plus />
+            </ButtonChangeEp>
+
+            <button
+                id="dropdownNotificationButton"
+                data-dropdown-toggle="dropdownSavedAnimeCard-{{ anime.id }}"
+                class="inline-flex h-8 w-8 items-center justify-center rounded-br-lg bg-[#4712DD] text-center text-sm font-medium text-white hover:text-gray-900 focus:outline-none"
+                type="button"
+            >
+                <Ellipsis />
+            </button>
+
+            <!-- Dropdown menu -->
+            <div
+                id="dropdownSavedAnimeCard-{{ anime.id }}"
+                class="z-20 hidden w-64 max-w-full divide-y divide-gray-300/20 rounded-lg border border-white/20 bg-black/50 p-3 shadow backdrop-blur-xl"
+                aria-labelledby="dropdownNotificationButton"
+            >
                 <div
-                    class="absolute inset-0 opacity-80 bg-gradient-to-t from-black via-black to-transparent"
-                ></div>
-            </div>
-
-            <figure>
-                <img
-                    class="w-full h-[240px] lg:h-[320px]"
-                    :src="anime.image_cover_url"
-                />
-            </figure>
-        </div>
-
-        <div>
-            <div class="min-w-full card-actions">
-                <div class="min-w-full join">
-                    <input
-                        class="w-full max-w-xs rounded-tl-none input input-sm join-item"
-                        type="number"
-                        min="0"
-                        placeholder="Episodio"
-                        :value="anime.episode_count"
-                        @change.prevent="
-                            updateSavedAnimeEpisode(anime, $event.target.value)
-                        "
-                        @input="
-                            updateSavedAnimeEpisode(anime, $event.target.value)
-                        "
-                    />
-
-                    <div
-                        class="dropdown"
-                        :class="{ 'dropdown-end': dropdown_position }"
-                    >
-                        <label
-                            tabindex="0"
-                            class="!rounded-tr-none btn btn-primary btn-square btn-sm join-item"
+                    class="mb-2 flex flex-col items-center justify-between gap-1"
+                >
+                    <div class="flex w-full gap-1" v-for="link in anime.links">
+                        <a
+                            :href="link"
+                            target="_blank"
+                            class="md w-full rounded-lg p-2 text-sm font-black text-gray-100 hover:bg-black/30 hover:text-indigo-600"
                         >
-                            <Ellipsis class="w-6 h-6" />
-                        </label>
+                            <div class="flex items-center gap-2">
+                                <ArrowTopRightSquare class="h-4 w-4" />
+                                link
+                            </div>
+                        </a>
 
-                        <ul
-                            tabindex="0"
-                            class="z-40 p-2 shadow dropdown-content menu bg-base-100 rounded-box"
-                            :class="{ '-ml-12': !dropdown_position }"
+                        <button
+                            type="button"
+                            @click="removeLink(anime.id, link)"
+                            class="hover:red-600 flex flex-1 items-center gap-2 rounded-lg border border-red-600 p-2 text-sm font-black text-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
                         >
-                            <li v-for="link in anime.links">
-                                <div
-                                    class="flex justify-between gap-4"
-                                    title="Cole o link do seu site de animes preferido..."
-                                    :key="link"
-                                >
-                                    <a
-                                        :href="link ?? '#'"
-                                        target="_blank"
-                                        class="flex items-center gap-1"
-                                    >
-                                        <ArrowTopRightSquare class="w-3 h-3" />
-
-                                        {{ useUrl().domain(link) }}
-                                    </a>
-
-                                    <button
-                                        class="text-red-500 btn btn-square btn-sm btn-outline"
-                                        title="Remover Link"
-                                        @click="removeLink(anime.id, link)"
-                                    >
-                                        <TrashBasic class="w-5 h-5" />
-                                    </button>
-                                </div>
-                            </li>
-
-                            <li>
-                                <form @submit.prevent="addLink">
-                                    <div
-                                        class="flex gap-2"
-                                        title="Cole o link do seu site de animes preferido..."
-                                    >
-                                        <input
-                                            class="w-40 max-w-xs input input-sm input-bordered"
-                                            type="text"
-                                            placeholder="Cole seu link"
-                                            v-model="links_form.new_link"
-                                        />
-
-                                        <button
-                                            class="btn btn-square btn-sm btn-outline btn-primary"
-                                            title="Adicionar Link"
-                                        >
-                                            <PlusCircle class="w-5 h-5" />
-                                        </button>
-                                    </div>
-                                </form>
-                            </li>
-
-                            <li>
-                                <button
-                                    class="text-red-500"
-                                    @click.prevent="removeAnime"
-                                >
-                                    <TrashBasic class="w-5 h-5" />
-
-                                    Remover anime
-                                </button>
-                            </li>
-                        </ul>
+                            <TrashBasic class="h-4 w-4" />
+                        </button>
                     </div>
+                </div>
+
+                <form @submit.prevent="addLink">
+                    <div
+                        class="700 flex items-center justify-between gap-1 py-2"
+                    >
+                        <input
+                            v-model="new_link"
+                            type="text"
+                            placeholder="Cole seu link..."
+                            class="block flex-1 rounded-lg border border-white/10 bg-transparent bg-gradient-to-b from-white/10 to-black/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40"
+                        />
+
+                        <button
+                            type="submit"
+                            class="flex h-10 w-10 items-center justify-center rounded-lg border border-indigo-700 text-center text-sm font-black text-indigo-700 hover:bg-indigo-600 hover:text-white hover:shadow-lg hover:shadow-indigo-700/80"
+                        >
+                            <PlusCircle class="h-4 w-4" />
+                        </button>
+                    </div>
+                </form>
+
+                <div class="700 flex items-center justify-between gap-1 pt-2">
+                    <button
+                        type="button"
+                        @click.prevent="removeAnime"
+                        class="hover:red-600 flex flex-1 items-center gap-2 rounded-lg border border-red-600 p-2 text-sm font-black text-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
+                    >
+                        <TrashBasic class="h-4 w-4" />
+
+                        <span>Remover anime</span>
+                    </button>
                 </div>
             </div>
         </div>

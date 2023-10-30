@@ -9,9 +9,12 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import NProgress from "nprogress";
 import Toast from "vue-toastification";
 import "flowbite";
+import { createPinia } from "pinia";
 
 router.on("start", () => NProgress.start());
 router.on("finish", () => NProgress.done());
+
+const pinia = createPinia();
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -25,6 +28,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(pinia)
             .use(ZiggyVue, Ziggy)
             .use(Toast, {
                 position: "bottom-right",
