@@ -4,25 +4,31 @@ import { ref } from "vue";
 import House from "@/Icons/HeroIcons/House.vue";
 import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
 import DropdownUserMenu from "./DropdownUserMenu.vue";
 import AppButtonHeader from "./AppButtonHeader.vue";
+import { onMounted } from "vue";
 
 const isOpen = ref(false);
 
-const links = [
+const links = ref([
     {
         name: "Início",
         href: route("home"),
         icon: House,
     },
-    {
-        name: "Pesquisar",
-        href: route("search"),
-        icon: MagnifyingGlass,
-    },
-];
+]);
+
+onMounted(() => {
+    if (usePage().props.value.auth.user) {
+        links.value.push({
+            name: "Pesquisar",
+            href: route("search"),
+            icon: MagnifyingGlass,
+        });
+    }
+});
 </script>
 
 <template>
