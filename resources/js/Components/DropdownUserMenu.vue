@@ -1,11 +1,12 @@
 <script setup>
+import { onMounted } from "vue";
+import { Link } from "@inertiajs/vue3";
+import { initFlowbite } from "flowbite";
+
 import BrushOutline from "@/Icons/HeroIcons/BrushOutline.vue";
 import LanguageOutline from "@/Icons/HeroIcons/LanguageOutline.vue";
 import GoOutOutline from "@/Icons/HeroIcons/GoOutOutline.vue";
 import GoInOutline from "@/Icons/HeroIcons/GoInOutline.vue";
-import { Link } from "@inertiajs/vue3";
-import { onMounted } from "vue";
-import { initFlowbite } from "flowbite";
 import PencilSquare from "@/Icons/HeroIcons/PencilSquare.vue";
 
 onMounted(() => initFlowbite());
