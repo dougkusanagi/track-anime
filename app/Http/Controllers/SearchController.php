@@ -10,7 +10,7 @@ class SearchController
     public function __invoke(Request $request)
     {
         return inertia('Search', [
-            'animes' => JikanMoeAnimesService::queryFromRequest($request),
+            'animes' => JikanMoeAnimesService::queryFromRequest($request)['data'] ?? [],
         ]);
     }
 }

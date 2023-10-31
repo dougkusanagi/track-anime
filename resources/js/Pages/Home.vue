@@ -22,9 +22,9 @@ const props = defineProps({
     <NewAuthLayout>
         <!-- <pre>{{ saved_animes }}</pre> -->
 
-        <div class="ml-6 mt-16 sm:ml-12">
+        <div class="mt-16 ml-6 sm:ml-12">
             <h2
-                class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/80"
+                class="pb-2 text-lg font-black border-b-2 border-white/40 text-white/80"
             >
                 Minha Lista
             </h2>
@@ -34,7 +34,7 @@ const props = defineProps({
                     <HomeFilterSelect>
                         <label
                             for="orderBy"
-                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                            class="block w-24 text-sm font-medium min-w-fit text-white/50"
                         >
                             Pesquisar:
                         </label>
@@ -42,7 +42,7 @@ const props = defineProps({
                         <input
                             id="q"
                             type="text"
-                            class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
+                            class="flex-1 block p-2 py-1 text-sm font-bold text-white bg-transparent border-none rounded outline-none appearance-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
                             placeholder="Nome do Anime..."
                             disabled
                         />
@@ -51,7 +51,7 @@ const props = defineProps({
                     <HomeFilterSelect>
                         <label
                             for="orderBy"
-                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                            class="block w-24 text-sm font-medium min-w-fit text-white/50"
                         >
                             Ordenar por:
                         </label>
@@ -66,7 +66,7 @@ const props = defineProps({
                     <HomeFilterSelect>
                         <label
                             for="gender"
-                            class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                            class="block w-24 text-sm font-medium min-w-fit text-white/50"
                         >
                             Gêneros:
                         </label>
@@ -80,8 +80,8 @@ const props = defineProps({
                 </div>
             </div>
 
-            <div class="mt-6 max-w-full">
-                <div class="flex gap-4 overflow-x-auto py-2">
+            <div class="max-w-full mt-6">
+                <div class="flex gap-4 py-2 overflow-x-auto">
                     <SavedAnimeCard
                         v-for="anime in saved_animes"
                         :anime="anime"

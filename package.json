@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "flowbite": "^2.0.0",
+    "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "swiper": "^10.3.1",
     "vue-toastification": "next"

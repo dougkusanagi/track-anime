@@ -8,7 +8,7 @@ const props = defineProps({ anime: Object });
 
 <template>
     <div
-        class="shadow-xl card card-compact bg-base-200"
+        class="flex flex-col w-40 shadow-xl rounded-xl bg-base-200"
         :title="anime.title"
         :key="anime.id"
     >

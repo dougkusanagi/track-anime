@@ -26,7 +26,6 @@ export default {
 
     plugins: [
         forms,
-        require("daisyui"),
         require("flowbite/plugin"),
         plugin(({ matchUtilities, theme }) => {
             matchUtilities(
