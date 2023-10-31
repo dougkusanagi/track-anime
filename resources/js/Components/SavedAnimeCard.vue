@@ -168,7 +168,8 @@ function removeAnime() {
                         >
                             <div class="flex items-center gap-2">
                                 <ArrowTopRightSquare class="h-4 w-4" />
-                                link
+
+                                {{ link.name }}
                             </div>
                         </a>
 
