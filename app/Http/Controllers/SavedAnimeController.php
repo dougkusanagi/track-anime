@@ -21,6 +21,7 @@ class SavedAnimeController
         $anime = JikanMoeAnimesService::findByMalId($request->mal_id)['data'] ?? null;
 
         if (!$anime) {
+            dd($anime);
             return to_route('home')
                 ->with('error', 'Anime não encontrado.');
         }
