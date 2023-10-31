@@ -28,6 +28,8 @@ let drawer_anime_details = null;
 const openAnimeDetails = async (clicked_anime) => {
     selected_anime_store.selected_anime = clicked_anime;
 
+    await new Promise((r) => setTimeout(r, 600));
+
     if (!drawer_anime_details) {
         drawer_anime_details = new Drawer(
             document.getElementById("drawer-saved-anime-details")
