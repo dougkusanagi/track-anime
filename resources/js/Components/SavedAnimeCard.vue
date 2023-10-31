@@ -143,7 +143,7 @@ function removeAnime() {
 
             <button
                 id="dropdownNotificationButton"
-                data-dropdown-toggle="dropdownSavedAnimeCard-{{ anime.id }}"
+                :data-dropdown-toggle="`dropdownSavedAnimeCard-${anime.id}`"
                 class="inline-flex h-8 w-8 items-center justify-center rounded-br-lg bg-[#4712DD] text-center text-sm font-medium text-white hover:brightness-125 focus:outline-none"
                 type="button"
             >
@@ -152,7 +152,7 @@ function removeAnime() {
 
             <!-- Dropdown menu -->
             <div
-                id="dropdownSavedAnimeCard-{{ anime.id }}"
+                :id="`dropdownSavedAnimeCard-${anime.id}`"
                 class="z-20 hidden w-64 max-w-full divide-y divide-gray-300/20 rounded-lg border border-white/20 bg-black/50 p-3 shadow backdrop-blur-xl"
                 aria-labelledby="dropdownNotificationButton"
             >
