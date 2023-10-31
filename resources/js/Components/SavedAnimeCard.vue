@@ -159,6 +159,7 @@ function removeAnime() {
             >
                 <div
                     class="mb-2 flex flex-col items-center justify-between gap-1"
+                    v-if="anime.links"
                 >
                     <div class="flex w-full gap-1" v-for="link in anime.links">
                         <a
@@ -169,7 +170,7 @@ function removeAnime() {
                             <div class="flex items-center gap-2">
                                 <ArrowTopRightSquare class="h-4 w-4" />
 
-                                {{ link.name }}
+                                {{ useUrl().domain(link) }}
                             </div>
                         </a>
 
