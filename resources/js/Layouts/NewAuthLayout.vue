@@ -6,8 +6,6 @@ import { useToast } from "vue-toastification";
 import AppHeader from "@/Components/AppHeader.vue";
 import AnimeDetailsDrawer from "@/Components/AnimeDetailsDrawer.vue";
 
-import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore";
-
 const flash = computed(() => usePage().props.flash);
 const toast = useToast();
 
