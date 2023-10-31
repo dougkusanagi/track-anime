@@ -13,7 +13,7 @@ function addToList() {
         return;
     }
 
-    router.post("saved-anime.store", { mal_id: props.anime.mal_id });
+    router.post(route("saved-anime.store"), { mal_id: props.anime.mal_id });
 }
 </script>
 
