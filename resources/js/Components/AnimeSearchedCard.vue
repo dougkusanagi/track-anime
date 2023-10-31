@@ -1,10 +1,20 @@
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 
 import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
-import ButtonChangeEp from "./ButtonChangeEp.vue";
+import { useToast } from "vue-toastification";
 
-const props = defineProps({ anime: Object });
+const props = defineProps({ anime: Object, already_on_list: Boolean });
+const toast = useToast();
+
+function addToList() {
+    if (props.already_on_list) {
+        toast("Este anime já está na sua lista.");
+        return;
+    }
+
+    router.post("saved-anime.store", { mal_id: props.anime.mal_id });
+}
 </script>
 
 <template>
@@ -15,18 +25,26 @@ const props = defineProps({ anime: Object });
             {{ anime.title }}
         </p>
 
-        <img class="h-64 w-40" :src="anime.images.webp.image_url" alt="" />
+        <img
+            class="h-64 w-40 object-cover"
+            :class="already_on_list ? 'brightness-50' : ''"
+            :src="anime.images.webp.large_image_url"
+            alt=""
+        />
 
         <div class="flex w-full items-center">
-            <Link
-                class="flex h-8 w-8 w-full items-center justify-center rounded-b-lg bg-[#1D0D80] hover:brightness-150"
-                method="post"
+            <button
                 as="button"
-                :href="route('saved-anime.store')"
-                :data="{ mal_id: anime.mal_id }"
+                @click="addToList"
+                class="flex h-8 w-full items-center justify-center rounded-b-lg hover:brightness-150"
+                :class="
+                    already_on_list
+                        ? 'brightness-50 hover:bg-gray800 bg-gray-600'
+                        : 'bg-[#1D0D80]'
+                "
             >
                 <PlusCircle />
-            </Link>
+            </button>
         </div>
     </div>
 

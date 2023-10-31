@@ -14,6 +14,7 @@ import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
 import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
 import Minus from "@/Icons/HeroIcons/Minus.vue";
 import Plus from "@/Icons/HeroIcons/Plus.vue";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
     anime: Object,
@@ -22,6 +23,7 @@ const props = defineProps({
 const new_link = ref("");
 const selected_anime_store = useSelectedAnime();
 let drawer_anime_details = null;
+const toast = useToast();
 
 const openAnimeDetails = async (clicked_anime) => {
     const anime_details = await axios.get(
@@ -64,7 +66,7 @@ function addLink() {
     console.log(new_link.value);
     if (!useUrl().isUrl(new_link.value)) {
         new_link.value = "";
-        alert("URL inválida");
+        toast.error("URL inválida");
         return;
     }
 

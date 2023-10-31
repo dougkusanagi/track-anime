@@ -11,6 +11,13 @@ class SavedAnimeController
 {
     public function store(Request $request)
     {
+        $saved_anime = SavedAnime::where('mal_id', $request->mal_id)->first();
+
+        if ($saved_anime) {
+            return to_route('home')
+                ->with('error', 'Este anime já está na sua lista.');
+        }
+
         $anime = JikanMoeAnimesService::findByMalId($request->mal_id)['data'] ?? null;
 
         if (!$anime) {
