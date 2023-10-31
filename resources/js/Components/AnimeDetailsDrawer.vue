@@ -17,6 +17,8 @@ const selected_anime_store = useSelectedAnimeStore();
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
+        <pre>{{ selected_anime_store.selected_anime }}</pre>
+
         <div v-if="selected_anime_store.selected_anime">
             <div class="mb-10">
                 <button
