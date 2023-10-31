@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         $saved_animes = auth()->user()
             ? SavedAnime::where('user_id', auth()->user()->id)->get()
-            : [];
+            : collect([]);
 
         $saved_animes->map(
             fn ($saved_anime) => $saved_anime->details =
