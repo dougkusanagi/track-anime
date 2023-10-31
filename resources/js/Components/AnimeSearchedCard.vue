@@ -2,52 +2,33 @@
 import { Link } from "@inertiajs/vue3";
 
 import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
+import ButtonChangeEp from "./ButtonChangeEp.vue";
 
 const props = defineProps({ anime: Object });
 </script>
 
 <template>
-    <div
-        class="flex flex-col w-40 shadow-xl rounded-xl bg-base-200"
-        :title="anime.title"
-        :key="anime.id"
-    >
-        <div>
-            <div
-                class="absolute flex flex-col justify-end group-hover:justify-between w-full bottom-[48px] p-2 h-36"
+    <div class="flex w-40 flex-col justify-end rounded-xl">
+        <p
+            class="line-clamp-3 w-full p-1 text-center text-xs font-black text-white"
+        >
+            {{ anime.title }}
+        </p>
+
+        <img class="h-64 w-40" :src="anime.images.webp.image_url" alt="" />
+
+        <div class="flex w-full items-center">
+            <Link
+                class="flex h-8 w-8 w-full items-center justify-center rounded-b-lg bg-[#1D0D80] hover:brightness-150"
+                method="post"
+                as="button"
+                :href="route('saved-anime.store')"
+                :data="{ mal_id: anime.mal_id }"
             >
-                <h4
-                    class="z-10 text-xs font-black text-center text-white card-title line-clamp-3"
-                >
-                    {{ anime.title }}
-                </h4>
-
-                <div
-                    class="absolute inset-0 opacity-80 bg-gradient-to-t from-black via-black to-transparent"
-                ></div>
-            </div>
-        </div>
-
-        <figure>
-            <img
-                class="w-full h-[260px] object-cover"
-                :src="anime.images.webp.image_url"
-            />
-        </figure>
-
-        <div class="flex flex-col items-center justify-between !p-2 card-body">
-            <div class="min-w-full card-actions">
-                <Link
-                    method="post"
-                    as="button"
-                    :href="route('saved-anime.store')"
-                    :data="{ mal_id: anime.mal_id }"
-                    class="flex-1 col-span-1 btn btn-square btn-outline btn-primary btn-sm"
-                    title="Adicionar à lista"
-                >
-                    <PlusCircle class="w-5 h-5" />
-                </Link>
-            </div>
+                <PlusCircle />
+            </Link>
         </div>
     </div>
+
+    <!-- <pre>{{ anime }}</pre> -->
 </template>

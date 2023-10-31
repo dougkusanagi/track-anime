@@ -32,9 +32,7 @@ onMounted(() => query_input.value.focus());
 
         <div class="ml-6 mt-16 sm:ml-12">
             <div class="mt-6 flex-1">
-                <div
-                    class="grid grid-cols-2 gap-y-4 overflow-x-auto py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
-                >
+                <div class="flex gap-4 overflow-x-auto py-2">
                     <AnimeSearchedCard
                         v-for="anime in animes"
                         :anime="anime"

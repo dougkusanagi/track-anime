@@ -84,13 +84,16 @@ const links = [
                 {{ link.name }}
             </AppButtonHeader>
 
-            <div class="border-l-2 border-white/20 pl-4">
+            <div class="border-l-0 border-white/20 sm:border-l-2 sm:pl-4">
                 <AppButtonHeader
                     id="dropdownUserMenuButton"
                     data-dropdown-toggle="dropdownUserMenu"
                     type="button"
+                    class="w-full"
                 >
                     <UserCircle />
+
+                    <span class="sm:hidden"> Configurações </span>
 
                     <CaretDown />
                 </AppButtonHeader>
