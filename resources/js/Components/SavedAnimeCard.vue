@@ -100,7 +100,7 @@ function removeAnime() {
 </script>
 
 <template>
-    <div class="flex w-44 flex-col rounded-xl">
+    <div class="flex w-44 flex-col justify-end rounded-xl">
         <p
             class="z-10 line-clamp-3 w-full p-1 text-center text-xs font-black text-white"
         >
