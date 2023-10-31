@@ -7,6 +7,7 @@ import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
 import { Link } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
 import DropdownUserMenu from "./DropdownUserMenu.vue";
+import AppButtonHeader from "./AppButtonHeader.vue";
 
 const isOpen = ref(false);
 
@@ -26,7 +27,7 @@ const links = [
 
 <template>
     <header
-        class="fixed top-0 z-10 w-full border-b-2 px-10 sm:flex sm:items-center sm:justify-between sm:py-3"
+        class="fixed top-0 z-10 w-full border-b-2 sm:flex sm:items-center sm:justify-between sm:px-10 sm:py-3"
         style="
             border-image: linear-gradient(
                     90deg,
@@ -77,26 +78,22 @@ const links = [
             :class="isOpen ? 'block' : 'hidden'"
             class="gap-10 border-t-2 px-2 pb-4 pt-2 sm:flex sm:border-none sm:p-0"
         >
-            <Link
-                :href="link.href"
-                class="flex items-center gap-2 rounded px-4 py-3 font-semibold text-white hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-700/60"
-                v-for="link in links"
-            >
+            <AppButtonHeader :href="link.href" v-for="link in links">
                 <component :is="link.icon" />
 
                 {{ link.name }}
-            </Link>
+            </AppButtonHeader>
 
             <div class="border-l-2 border-white/20 pl-4">
-                <button
+                <AppButtonHeader
                     id="dropdownUserMenuButton"
                     data-dropdown-toggle="dropdownUserMenu"
-                    class="flex items-center gap-2 rounded px-4 py-3 font-semibold text-white hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-700/60"
+                    type="button"
                 >
                     <UserCircle />
 
                     <CaretDown />
-                </button>
+                </AppButtonHeader>
 
                 <DropdownUserMenu />
             </div>

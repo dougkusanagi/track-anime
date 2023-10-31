@@ -7,6 +7,7 @@ import { Link } from "@inertiajs/vue3";
 import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
+import AppButton from "@/Components/AppButton.vue";
 
 const props = defineProps({
     animes: Object,
@@ -21,22 +22,20 @@ const props = defineProps({
     <Head title="Home" />
 
     <NewAuthLayout>
-        <!-- <pre>{{ saved_animes }}</pre> -->
-
-        <div class="mt-16 ml-6 sm:ml-12">
+        <div class="ml-6 mt-16 sm:ml-12">
             <h2
-                class="pb-2 text-lg font-black border-b-2 border-white/40 text-white/80"
+                class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/80"
             >
                 Minha Lista
             </h2>
 
-            <div v-if="$page.props.user">
+            <div v-if="$page.props.auth.user">
                 <div class="mt-6">
                     <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
                         <HomeFilterSelect>
                             <label
                                 for="orderBy"
-                                class="block w-24 text-sm font-medium min-w-fit text-white/50"
+                                class="block w-24 min-w-fit text-sm font-medium text-white/50"
                             >
                                 Pesquisar:
                             </label>
@@ -44,7 +43,7 @@ const props = defineProps({
                             <input
                                 id="q"
                                 type="text"
-                                class="flex-1 block p-2 py-1 text-sm font-bold text-white bg-transparent border-none rounded outline-none appearance-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
+                                class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
                                 placeholder="Nome do Anime..."
                                 disabled
                             />
@@ -53,7 +52,7 @@ const props = defineProps({
                         <HomeFilterSelect>
                             <label
                                 for="orderBy"
-                                class="block w-24 text-sm font-medium min-w-fit text-white/50"
+                                class="block w-24 min-w-fit text-sm font-medium text-white/50"
                             >
                                 Ordenar por:
                             </label>
@@ -68,7 +67,7 @@ const props = defineProps({
                         <HomeFilterSelect>
                             <label
                                 for="gender"
-                                class="block w-24 text-sm font-medium min-w-fit text-white/50"
+                                class="block w-24 min-w-fit text-sm font-medium text-white/50"
                             >
                                 Gêneros:
                             </label>
@@ -82,8 +81,8 @@ const props = defineProps({
                     </div>
                 </div>
 
-                <div class="max-w-full mt-6">
-                    <div class="flex gap-4 py-2 overflow-x-auto">
+                <div class="mt-6 max-w-full">
+                    <div class="flex gap-4 overflow-x-auto py-2">
                         <SavedAnimeCard
                             v-for="anime in saved_animes"
                             :anime="anime"
@@ -94,12 +93,15 @@ const props = defineProps({
             </div>
 
             <div v-else>
-                <div class="mt-6">
-                    <Link> Logue ou cadastre-se para ver seus animes </Link>
+                <div class="mt-6 text-xl text-white">
+                    <AppButton :href="route('login')">
+                        Inicie uma sessão
+                    </AppButton>
+                    ou
+                    <AppButton :href="route('register')">Cadastre-se</AppButton>
+                    para ver seus animes
                 </div>
             </div>
         </div>
-
-        <!-- <p>{{ animes }}</p> -->
     </NewAuthLayout>
 </template>
