@@ -4,7 +4,7 @@ import { router } from "@inertiajs/vue3";
 
 import useDebounce from "@/Composables/useDebounce";
 import useUrl from "@/Composables/useUrl";
-import { useSelectedAnime } from "@/Stores/useSelectedAnime.js";
+import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore.js";
 
 import ButtonChangeEp from "@/Components/ButtonChangeEp.vue";
 
@@ -21,16 +21,11 @@ const props = defineProps({
 });
 
 const new_link = ref("");
-const selected_anime_store = useSelectedAnime();
+const selected_anime_store = useSelectedAnimeStore();
 let drawer_anime_details = null;
 const toast = useToast();
 
 const openAnimeDetails = async (clicked_anime) => {
-    const anime_details = await axios.get(
-        route("anime-details", clicked_anime.mal_id)
-    );
-
-    clicked_anime.detail = anime_details.data;
     selected_anime_store.selected_anime = clicked_anime;
 
     if (!drawer_anime_details) {
@@ -100,6 +95,7 @@ function removeAnime() {
 </script>
 
 <template>
+    <!-- <pre>{{ anime.details }}</pre> -->
     <div class="flex w-44 flex-col justify-end rounded-xl">
         <p
             class="z-10 line-clamp-3 w-full p-1 text-center text-xs font-black text-white"

@@ -13,6 +13,12 @@ class HomeController extends Controller
             ? SavedAnime::where('user_id', auth()->user()->id)->get()
             : [];
 
+        $saved_animes->map(
+            fn ($saved_anime) => $saved_anime->details =
+                JikanMoeAnimesService::findByMalId($saved_anime->mal_id)['data'] ??
+                []
+        );
+
         return inertia('Home', [
             'animes' => JikanMoeAnimesService::getTopTen(),
             'saved_animes' => $saved_animes,

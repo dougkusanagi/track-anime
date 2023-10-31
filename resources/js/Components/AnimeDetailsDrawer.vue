@@ -50,10 +50,10 @@ const props = defineProps({
                 </button>
             </div>
 
-            <!-- <pre>{{ anime.detail }}</pre> -->
+            <!-- <pre>{{ anime.details }}</pre> -->
 
             <div class="flex">
-                <img :src="anime.detail.images.webp.image_url" alt="" />
+                <img :src="anime.details.images.webp.image_url" alt="" />
 
                 <div class="flex flex-1 flex-col justify-between">
                     <div
@@ -62,7 +62,7 @@ const props = defineProps({
                         <span
                             class="flex justify-center text-lg font-black text-white"
                         >
-                            {{ anime.detail.year }}
+                            {{ anime.details.year }}
                         </span>
 
                         <div class="flex items-center justify-center gap-1">
@@ -71,7 +71,7 @@ const props = defineProps({
                             <StarSolid class="fill-yellow-400" />
 
                             <span class="text-lg font-black text-white">
-                                {{ anime.detail.score }}
+                                {{ anime.details.score }}
                             </span>
                         </div>
 
@@ -86,7 +86,7 @@ const props = defineProps({
                         <div class="mx-4 flex gap-2">
                             <span
                                 class="rounded-lg border border-emerald-600/80 bg-emerald-600/50 px-2 py-1 text-xs font-bold"
-                                v-if="anime.detail.airing"
+                                v-if="anime.details.airing"
                             >
                                 Em Exibição
                             </span>
@@ -146,7 +146,7 @@ const props = defineProps({
                     id="drawer-label"
                     class="inline-flex items-center text-4xl font-semibold text-white"
                 >
-                    {{ anime.detail.title }}
+                    {{ anime.details.title }}
                 </h4>
 
                 <div class="mt-6 flex flex-col">
@@ -155,7 +155,7 @@ const props = defineProps({
                     <div class="mt-2">
                         <span
                             class="mr-2 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/80"
-                            v-for="genre in anime.detail.genres"
+                            v-for="genre in anime.details.genres"
                         >
                             {{ genre.name }}
                         </span>
@@ -167,13 +167,13 @@ const props = defineProps({
 
                     <div class="mt-2">
                         <span class="mr-2 text-white/80">
-                            {{ anime.detail.season }}
+                            {{ anime.details.season }}
                         </span>
                     </div>
                 </div>
 
                 <p class="mt-6 text-lg text-white">
-                    {{ anime.detail.synopsis }}
+                    {{ anime.details.synopsis }}
                 </p>
             </div>
         </div>

@@ -6,12 +6,12 @@ import { useToast } from "vue-toastification";
 import AppHeader from "@/Components/AppHeader.vue";
 import AnimeDetailsDrawer from "@/Components/AnimeDetailsDrawer.vue";
 
-import { useSelectedAnime } from "@/Stores/useSelectedAnime";
+import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore";
 
 const flash = computed(() => usePage().props.flash);
 const toast = useToast();
 
-const selected_anime_store = useSelectedAnime();
+const selected_anime_store = useSelectedAnimeStore();
 
 function triggerFlash() {
     const types = Object.keys(flash.value);
@@ -31,11 +31,14 @@ watch(flash, triggerFlash);
 <template>
     <AnimeDetailsDrawer :anime="selected_anime_store.selected_anime" />
 
-    <div class="inset-0 min-h-screen bg-[url('/bg.png')] bg-fixed pb-16">
-        <AppHeader />
+    <div
+        class="inset-0 min-h-screen overflow-hidden bg-[url('/bg.png')] bg-cover bg-fixed pb-16"
+    >
+        <!-- black overlay on top at 30% opacity at filter multiply -->
 
         <div class="z-10 pt-[74px]">
             <slot />
         </div>
+        <AppHeader />
     </div>
 </template>
