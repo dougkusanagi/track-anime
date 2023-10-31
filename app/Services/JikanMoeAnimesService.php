@@ -31,7 +31,7 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
             );
     }
 
@@ -45,18 +45,31 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
             );
     }
 
     public static function findByMalId(int $mal_id)
     {
-        return cache()
+        $instance = new self();
+
+        $cached = cache()
             ->remember(
                 'mal_id_' . $mal_id,
                 now()->addDays(1),
-                fn() => Http::get(self::BASE_URL . '/anime/' . $mal_id)->json()
+                fn () => $instance->byMalId($mal_id)
             );
+
+        if ($cached) {
+            return $cached;
+        }
+
+        return $instance->byMalId($mal_id);
+    }
+
+    private function byMalId(int $mal_id)
+    {
+        return Http::get(self::BASE_URL . '/anime/' . $mal_id)->json();
     }
 
     public static function getTopTen()
@@ -70,7 +83,7 @@ class JikanMoeAnimesService
             ->remember(
                 'top_ten_animes',
                 now()->addDays(1),
-                fn() => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
             );
     }
 }
