@@ -8,8 +8,6 @@ import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
-import { onMounted } from "vue";
-import { initFlowbite } from "flowbite";
 
 const props = defineProps({
     animes: Object,
@@ -18,7 +16,6 @@ const props = defineProps({
         default: [],
     },
 });
-onMounted(() => initFlowbite());
 </script>
 
 <template>

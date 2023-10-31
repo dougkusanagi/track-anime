@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 
 import useDebounce from "@/Composables/useDebounce";
 import useUrl from "@/Composables/useUrl";
 import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore.js";
+import { useToast } from "vue-toastification";
+import { initFlowbite } from "flowbite";
 
 import ButtonChangeEp from "@/Components/ButtonChangeEp.vue";
 
@@ -14,7 +16,8 @@ import PlusCircle from "@/Icons/HeroIcons/PlusCircle.vue";
 import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
 import Minus from "@/Icons/HeroIcons/Minus.vue";
 import Plus from "@/Icons/HeroIcons/Plus.vue";
-import { useToast } from "vue-toastification";
+
+onMounted(() => initFlowbite());
 
 const props = defineProps({
     anime: Object,
