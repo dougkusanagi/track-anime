@@ -20,10 +20,10 @@ const props = defineProps({
     anime: Object,
 });
 
+const toast = useToast();
 const new_link = ref("");
 const selected_anime_store = useSelectedAnimeStore();
 let drawer_anime_details = null;
-const toast = useToast();
 
 const openAnimeDetails = async (clicked_anime) => {
     selected_anime_store.selected_anime = clicked_anime;

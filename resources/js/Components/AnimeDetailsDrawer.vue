@@ -5,6 +5,7 @@ import StarOutline from "@/Icons/HeroIcons/StarOutline.vue";
 import StarSolid from "@/Icons/HeroIcons/StarSolid.vue";
 import HeartOutline from "@/Icons/HeroIcons/HeartOutline.vue";
 import HeartSolid from "@/Icons/HeroIcons/HeartSolid.vue";
+import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore";
 
 const props = defineProps({
     anime: {
@@ -12,6 +13,8 @@ const props = defineProps({
         default: {},
     },
 });
+
+const selected_anime_store = useSelectedAnimeStore();
 </script>
 
 <template>
@@ -23,7 +26,7 @@ const props = defineProps({
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
-        <div v-if="anime">
+        <div v-if="selected_anime_store.selected_anime">
             <div class="mb-10">
                 <button
                     type="button"
@@ -50,10 +53,16 @@ const props = defineProps({
                 </button>
             </div>
 
-            <!-- <pre>{{ anime.details }}</pre> -->
+            <!-- <pre>{{ selected_anime_store.selected_anime.details }}</pre> -->
 
             <div class="flex">
-                <img :src="anime.details.images.webp.image_url" alt="" />
+                <img
+                    :src="
+                        selected_anime_store.selected_anime.details.images.webp
+                            .image_url
+                    "
+                    alt=""
+                />
 
                 <div class="flex flex-1 flex-col justify-between">
                     <div
@@ -62,7 +71,9 @@ const props = defineProps({
                         <span
                             class="flex justify-center text-lg font-black text-white"
                         >
-                            {{ anime.details.year }}
+                            {{
+                                selected_anime_store.selected_anime.details.year
+                            }}
                         </span>
 
                         <div class="flex items-center justify-center gap-1">
@@ -71,7 +82,10 @@ const props = defineProps({
                             <StarSolid class="fill-yellow-400" />
 
                             <span class="text-lg font-black text-white">
-                                {{ anime.details.score }}
+                                {{
+                                    selected_anime_store.selected_anime.details
+                                        .score
+                                }}
                             </span>
                         </div>
 
@@ -86,7 +100,10 @@ const props = defineProps({
                         <div class="mx-4 flex gap-2">
                             <span
                                 class="rounded-lg border border-emerald-600/80 bg-emerald-600/50 px-2 py-1 text-xs font-bold"
-                                v-if="anime.details.airing"
+                                v-if="
+                                    selected_anime_store.selected_anime.details
+                                        .airing
+                                "
                             >
                                 Em Exibição
                             </span>
@@ -119,7 +136,10 @@ const props = defineProps({
 
                             <AppInputBasic
                                 id="rewatched"
-                                v-model="anime.rewatch_count"
+                                v-model="
+                                    selected_anime_store.selected_anime
+                                        .rewatch_count
+                                "
                                 type="number"
                                 min="0"
                             />
@@ -146,7 +166,7 @@ const props = defineProps({
                     id="drawer-label"
                     class="inline-flex items-center text-4xl font-semibold text-white"
                 >
-                    {{ anime.details.title }}
+                    {{ selected_anime_store.selected_anime.details.title }}
                 </h4>
 
                 <div class="mt-6 flex flex-col">
@@ -155,7 +175,8 @@ const props = defineProps({
                     <div class="mt-2">
                         <span
                             class="mr-2 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/80"
-                            v-for="genre in anime.details.genres"
+                            v-for="genre in selected_anime_store.selected_anime
+                                .details.genres"
                         >
                             {{ genre.name }}
                         </span>
@@ -167,13 +188,16 @@ const props = defineProps({
 
                     <div class="mt-2">
                         <span class="mr-2 text-white/80">
-                            {{ anime.details.season }}
+                            {{
+                                selected_anime_store.selected_anime.details
+                                    .season
+                            }}
                         </span>
                     </div>
                 </div>
 
                 <p class="mt-6 text-lg text-white">
-                    {{ anime.details.synopsis }}
+                    {{ selected_anime_store.selected_anime.details.synopsis }}
                 </p>
             </div>
         </div>

@@ -11,8 +11,6 @@ import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore";
 const flash = computed(() => usePage().props.flash);
 const toast = useToast();
 
-const selected_anime_store = useSelectedAnimeStore();
-
 function triggerFlash() {
     const types = Object.keys(flash.value);
 
@@ -29,7 +27,7 @@ watch(flash, triggerFlash);
 </script>
 
 <template>
-    <AnimeDetailsDrawer :anime="selected_anime_store.selected_anime" />
+    <AnimeDetailsDrawer />
 
     <div
         class="inset-0 min-h-screen overflow-hidden bg-[url('/bg.png')] bg-cover bg-fixed pb-16"
