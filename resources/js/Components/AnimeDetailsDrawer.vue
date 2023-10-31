@@ -7,19 +7,10 @@ import HeartOutline from "@/Icons/HeroIcons/HeartOutline.vue";
 import HeartSolid from "@/Icons/HeroIcons/HeartSolid.vue";
 import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore";
 
-const props = defineProps({
-    anime: {
-        type: Object,
-        default: {},
-    },
-});
-
 const selected_anime_store = useSelectedAnimeStore();
 </script>
 
 <template>
-    <!-- <pre>{{ anime }}</pre> -->
-
     <div
         id="drawer-saved-anime-details"
         class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-white/5 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
@@ -52,8 +43,6 @@ const selected_anime_store = useSelectedAnimeStore();
                     <span class="sr-only">Close menu</span>
                 </button>
             </div>
-
-            <!-- <pre>{{ selected_anime_store.selected_anime.details }}</pre> -->
 
             <div class="flex">
                 <img
