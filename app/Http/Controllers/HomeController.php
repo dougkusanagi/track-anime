@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function __invoke()
     {
         $saved_animes = auth()->user()
-            ? SavedAnime::where('user_id', auth()->user()->id)->get()
+            ? SavedAnime::where('user_id', auth()->user()->id)->orderBy('last_watched_at', 'desc')->latest()->get()
             : collect([]);
 
         $saved_animes->map(

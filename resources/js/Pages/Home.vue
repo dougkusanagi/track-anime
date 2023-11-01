@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, reactive } from "vue";
 import { Head } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
@@ -8,7 +8,6 @@ import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
-import { onMounted } from "vue";
 
 const props = defineProps({
     animes: Object,
@@ -17,12 +16,15 @@ const props = defineProps({
         default: [],
     },
 });
-const q = ref("");
 const query_input = ref("");
+const form_saved_anime = reactive({
+    q: "",
+    orderBy: "",
+});
 
 const saved_animes_filtered = computed(() =>
     props.saved_animes.filter((anime) =>
-        anime.title.toLowerCase().includes(q.value.toLowerCase())
+        anime.title.toLowerCase().includes(form_saved_anime.q.toLowerCase())
     )
 );
 
@@ -55,7 +57,7 @@ onMounted(() => query_input.value.focus());
                         type="search"
                         class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none placeholder:font-bold placeholder:text-white/60 focus:ring-transparent sm:w-44"
                         placeholder="Nome do Anime..."
-                        v-model="q"
+                        v-model="form_saved_anime.q"
                         autocomplete="off"
                     />
                 </HomeFilterSelect>
@@ -70,8 +72,13 @@ onMounted(() => query_input.value.focus());
 
                     <AnimeSavedFilterSelect
                         id="orderBy"
-                        :options="[{ label: 'Alfabético', value: '' }]"
-                        disabled
+                        :options="[
+                            {
+                                label: 'Último assistido',
+                                value: 'last_watched_at',
+                            },
+                        ]"
+                        v-model="form_saved_anime.orderBy"
                     />
                 </HomeFilterSelect>
 

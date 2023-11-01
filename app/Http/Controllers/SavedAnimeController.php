@@ -43,6 +43,7 @@ class SavedAnimeController
         SavedAnime::findOrFail($request->anime['id'])
             ->update([
                 'episode_count' => $request->episode_count ?? 0,
+                'last_watched_at' => now(),
             ]);
 
         Session::flash('success', 'Episódio atualizado com sucesso.');
