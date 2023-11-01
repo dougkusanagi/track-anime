@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\SavedAnime;
 use App\Services\JikanMoeAnimesService;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $saved_animes = auth()->user()
-            ? SavedAnime::where('user_id', auth()->user()->id)->orderBy('last_watched_at', 'desc')->latest()->get()
+            ? SavedAnime::home($request)
             : collect([]);
+
+        // dd($request->all());
 
         $saved_animes->map(
             fn ($saved_anime) => $saved_anime->details =

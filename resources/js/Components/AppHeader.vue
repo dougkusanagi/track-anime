@@ -83,13 +83,23 @@ onBeforeMount(() => {
 
         <nav
             :class="isOpen ? 'block' : 'hidden'"
-            class="gap-10 border-t-2 px-2 pb-4 pt-2 sm:flex sm:border-none sm:p-0"
+            class="flex items-center border-t-2 px-2 pb-4 pt-2 sm:flex sm:border-none sm:p-0"
         >
-            <AppButtonHeader :href="link.href" v-for="link in links">
-                <component :is="link.icon" />
+            <div class="flex items-center gap-10">
+                <AppButtonHeader :href="link.href" v-for="link in links">
+                    <component :is="link.icon" />
 
-                {{ link.name }}
-            </AppButtonHeader>
+                    {{ link.name }}
+                </AppButtonHeader>
+            </div>
+
+            <a
+                href="mailto:dl.aguiar@yahoo.com.br?subject=EMAIL DO TRACK ANIME"
+                class="ml-6 mr-8 flex h-7 w-7 items-center justify-center rounded-full border border-red-800 text-xs transition-all hover:bg-red-800"
+                title="Envie sua sujestão 🤯️ ou relate um problema 💩️"
+            >
+                ?
+            </a>
 
             <div class="border-l-0 border-white/20 sm:border-l-2 sm:pl-4">
                 <AppButtonHeader

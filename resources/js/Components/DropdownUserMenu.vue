@@ -58,7 +58,7 @@ onMounted(() => initFlowbite());
                 <div>
                     <Link
                         :href="route('logout')"
-                        class="mt-1 flex items-center gap-2 rounded px-4 py-3 hover:bg-white/5 hover:backdrop-blur"
+                        class="mt-1 flex w-full items-center gap-2 rounded px-4 py-3 hover:bg-white/5 hover:backdrop-blur"
                         method="post"
                         as="button"
                     >

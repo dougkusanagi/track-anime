@@ -98,8 +98,7 @@ function removeAnime() {
 </script>
 
 <template>
-    <!-- <pre>{{ anime.details }}</pre> -->
-    <div class="flex w-44 flex-col justify-end rounded-xl">
+    <div class="flex w-44 flex-col justify-end rounded-xl" :title="anime.title">
         <p
             class="z-10 line-clamp-3 w-full p-1 text-center text-xs font-black text-white"
         >
@@ -113,7 +112,7 @@ function removeAnime() {
             <img
                 class="min-w-96 object-cover"
                 :src="anime.image_cover_url"
-                alt=""
+                :alt="`Capa do anime ${anime.title}`"
             />
         </button>
 
@@ -127,7 +126,7 @@ function removeAnime() {
             </ButtonChangeEp>
 
             <input
-                class="h-8 w-16 flex-1 border-none bg-[#140A4F] text-center text-sm font-medium focus:ring-white/20"
+                class="h-8 w-16 flex-1 border-none bg-[#140A4F] px-1 text-center text-sm font-medium focus:ring-white/20"
                 type="text"
                 placeholder="ex: 8"
                 :value="anime.episode_count"
@@ -143,7 +142,7 @@ function removeAnime() {
 
             <button
                 id="dropdownNotificationButton"
-                :data-dropdown-toggle="`dropdownSavedAnimeCard-${anime.id}`"
+                :data-dropdown-toggle="`dropdownSavedAnimeDropdown-${anime.id}`"
                 class="inline-flex h-8 w-8 items-center justify-center rounded-br-lg bg-[#4712DD] text-center text-sm font-medium text-white hover:brightness-125 focus:outline-none"
                 type="button"
             >
@@ -152,7 +151,7 @@ function removeAnime() {
 
             <!-- Dropdown menu -->
             <div
-                :id="`dropdownSavedAnimeCard-${anime.id}`"
+                :id="`dropdownSavedAnimeDropdown-${anime.id}`"
                 class="z-20 hidden w-64 max-w-full divide-y divide-gray-300/20 rounded-lg border border-white/20 bg-black/50 p-3 shadow backdrop-blur-xl"
                 aria-labelledby="dropdownNotificationButton"
             >

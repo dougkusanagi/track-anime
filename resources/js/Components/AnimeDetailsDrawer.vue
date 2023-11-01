@@ -86,7 +86,7 @@ const selected_anime_store = useSelectedAnimeStore();
                     </div>
 
                     <div>
-                        <div class="mx-4 flex gap-2">
+                        <div class="mx-4 mt-2 flex gap-2">
                             <span
                                 class="rounded-lg border border-emerald-600/80 bg-emerald-600/50 px-2 py-1 text-xs font-bold"
                                 v-if="
@@ -112,7 +112,8 @@ const selected_anime_store = useSelectedAnimeStore();
 
                             <select
                                 id="list"
-                                class="rounded-lg border-white/10 bg-white/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40"
+                                class="rounded-lg border-white/10 bg-white/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40 disabled:bg-white/20 disabled:text-white/30"
+                                disabled
                             >
                                 <option value="">Assistindo</option>
                             </select>
@@ -131,6 +132,8 @@ const selected_anime_store = useSelectedAnimeStore();
                                 "
                                 type="number"
                                 min="0"
+                                disabled
+                                class="disabled:bg-white/20 disabled:bg-none disabled:text-white/30"
                             />
                         </div>
 
@@ -144,6 +147,8 @@ const selected_anime_store = useSelectedAnimeStore();
                                 type="number"
                                 min="0"
                                 max="10"
+                                disabled
+                                class="disabled:bg-white/20 disabled:bg-none disabled:text-white/30"
                             />
                         </div>
                     </div>
@@ -153,7 +158,7 @@ const selected_anime_store = useSelectedAnimeStore();
             <div class="mt-6">
                 <h4
                     id="drawer-label"
-                    class="inline-flex items-center text-4xl font-semibold text-white"
+                    class="inline-flex items-center text-3xl font-semibold text-white"
                 >
                     {{ selected_anime_store.selected_anime.details.title }}
                 </h4>
