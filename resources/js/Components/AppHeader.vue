@@ -8,11 +8,11 @@ import { Link, usePage } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
 import DropdownUserMenu from "./DropdownUserMenu.vue";
 import AppButtonHeader from "./AppButtonHeader.vue";
-import { onMounted } from "vue";
+import { onMounted, shallowRef } from "vue";
 
 const isOpen = ref(false);
 
-const links = ref([
+const links = shallowRef([
     {
         name: "Início",
         href: route("home"),
@@ -21,7 +21,7 @@ const links = ref([
 ]);
 
 onMounted(() => {
-    if (usePage().props.value.auth.user) {
+    if (usePage().props.auth.user) {
         links.value.push({
             name: "Pesquisar",
             href: route("search"),
