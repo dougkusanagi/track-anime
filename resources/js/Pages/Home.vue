@@ -1,13 +1,14 @@
 <script setup>
+import { ref, computed } from "vue";
 import { Head } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
-import { Link } from "@inertiajs/vue3";
 
 import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
     animes: Object,
@@ -16,6 +17,16 @@ const props = defineProps({
         default: [],
     },
 });
+const q = ref("");
+const query_input = ref("");
+
+const saved_animes_filtered = computed(() =>
+    props.saved_animes.filter((anime) =>
+        anime.title.toLowerCase().includes(q.value.toLowerCase())
+    )
+);
+
+onMounted(() => query_input.value.focus());
 </script>
 
 <template>
@@ -33,17 +44,19 @@ const props = defineProps({
                 <HomeFilterSelect>
                     <label
                         for="orderBy"
-                        class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                        class="block w-24 min-w-fit text-sm font-medium text-white/80"
                     >
                         Pesquisar:
                     </label>
 
                     <input
                         id="q"
-                        type="text"
-                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 disabled:placeholder:font-bold disabled:placeholder:text-white/30 sm:w-44"
+                        ref="query_input"
+                        type="search"
+                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none placeholder:font-bold placeholder:text-white/60 focus:ring-transparent sm:w-44"
                         placeholder="Nome do Anime..."
-                        disabled
+                        v-model="q"
+                        autocomplete="off"
                     />
                 </HomeFilterSelect>
 
@@ -81,7 +94,7 @@ const props = defineProps({
             <div class="mt-6 max-w-full">
                 <div class="flex gap-4 overflow-x-auto py-2">
                     <SavedAnimeCard
-                        v-for="anime in saved_animes"
+                        v-for="anime in saved_animes_filtered"
                         :anime="anime"
                         :key="anime.id"
                     />
