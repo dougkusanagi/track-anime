@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, shallowRef, onBeforeMount } from "vue";
 
 import House from "@/Icons/HeroIcons/House.vue";
 import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
@@ -8,9 +8,10 @@ import { Link, usePage } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
 import DropdownUserMenu from "./DropdownUserMenu.vue";
 import AppButtonHeader from "./AppButtonHeader.vue";
-import { onMounted, shallowRef } from "vue";
 
 const isOpen = ref(false);
+const page = usePage();
+const isAuth = computed(() => page.props.auth.user);
 
 const links = shallowRef([
     {
@@ -20,8 +21,8 @@ const links = shallowRef([
     },
 ]);
 
-onMounted(() => {
-    if (usePage().props.auth.user) {
+onBeforeMount(() => {
+    if (isAuth) {
         links.value.push({
             name: "Pesquisar",
             href: route("search"),
