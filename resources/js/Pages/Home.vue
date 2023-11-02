@@ -6,7 +6,7 @@ import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 
 import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
-import SavedAnimeDropdown from "@/Components/SavedAnimeDropdown.vue";
+import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
 import { reactive } from "vue";
 
@@ -130,8 +130,9 @@ onMounted(() => query_input.value.focus());
             </div>
 
             <div class="mt-6 max-w-full">
-                <div class="flex gap-4 overflow-x-auto py-2">
-                    <SavedAnimeDropdown
+                <!-- <div class="flex gap-4 overflow-x-auto py-2"> -->
+                <div class="mr-6 grid grid-cols-6 gap-4 py-2">
+                    <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
                         :anime="anime"
                         :key="anime.id"
