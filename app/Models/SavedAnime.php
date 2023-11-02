@@ -19,11 +19,13 @@ class SavedAnime extends Model
         'links' => 'array',
     ];
 
-    public function scopeHome(Builder $query, Request $request)
+    public function scopeHome(Builder $query, Request $request): Builder
     {
+        $order_by = $request->get('orderBy') ?? 'last_watched_at';
+        $sort = $request->get('sort') ?? 'desc';
+
         return $query
             ->where('user_id', auth()->user()->id)
-            ->orderBy($request->get('orderBy') ?? 'last_watched_at', $request->get('sort') ?? 'desc')
-            ->get();
+            ->orderBy($order_by, $sort);
     }
 }

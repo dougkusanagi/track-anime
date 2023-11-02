@@ -145,7 +145,6 @@ onMounted(() => {
                         v-for="anime in saved_animes_filtered"
                         :anime="anime"
                         :key="anime.id"
-                        v-once
                     />
                 </div>
             </div>

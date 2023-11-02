@@ -11,10 +11,8 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         $saved_animes = auth()->user()
-            ? SavedAnime::home($request)
+            ? SavedAnime::home($request)->get()
             : collect([]);
-
-        // dd($request->all());
 
         $saved_animes->map(
             fn ($saved_anime) => $saved_anime->details =
