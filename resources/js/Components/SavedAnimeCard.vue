@@ -17,7 +17,7 @@ import TrashBasic from "@/Icons/HeroIcons/TrashBasic.vue";
 import Minus from "@/Icons/HeroIcons/Minus.vue";
 import Plus from "@/Icons/HeroIcons/Plus.vue";
 
-onMounted(() => initFlowbite());
+// onMounted(() => initFlowbite());
 
 const props = defineProps({
     anime: Object,
@@ -121,6 +121,7 @@ function removeAnime() {
                 class="flex h-8 w-8 items-center justify-center rounded-bl-lg bg-[#1D0D80]"
                 @click="decreaseSavedAnimeEpisode(anime)"
                 as="button"
+                v-once
             >
                 <Minus />
             </ButtonChangeEp>
@@ -136,6 +137,7 @@ function removeAnime() {
             <ButtonChangeEp
                 @click="increaseSavedAnimeEpisode(anime)"
                 as="button"
+                v-once
             >
                 <Plus />
             </ButtonChangeEp>
