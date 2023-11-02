@@ -13,7 +13,7 @@ const selected_anime_store = useSelectedAnimeStore();
 <template>
     <div
         id="drawer-saved-anime-details"
-        class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-white/5 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
+        class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-black/10 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
