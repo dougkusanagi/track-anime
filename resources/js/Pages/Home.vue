@@ -131,7 +131,9 @@ onMounted(() => query_input.value.focus());
 
             <div class="mt-6 max-w-full">
                 <!-- <div class="flex gap-4 overflow-x-auto py-2"> -->
-                <div class="mr-6 grid grid-cols-6 gap-4 py-2">
+                <div
+                    class="mr-6 grid grid-cols-2 gap-y-4 overflow-x-auto py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
+                >
                     <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
                         :anime="anime"
