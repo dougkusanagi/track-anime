@@ -47,7 +47,11 @@ watch(saved_order_by, async (_new, _old) => {
     );
 });
 
-onMounted(() => query_input.value.focus());
+onMounted(() => {
+    if (query_input.value) {
+        query_input.value.focus();
+    }
+});
 </script>
 
 <template>

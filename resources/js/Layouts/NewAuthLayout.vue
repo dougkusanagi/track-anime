@@ -28,7 +28,7 @@ watch(flash, triggerFlash);
     <AnimeDetailsDrawer />
 
     <div
-        class="inset-0 min-h-screen overflow-hidden bg-[url('/bg.png')] bg-cover bg-fixed pb-16"
+        class="inset-0 min-h-screen overflow-hidden bg-[url('/bg.jpg')] bg-cover bg-fixed pb-16"
     >
         <!-- black overlay on top at 30% opacity at filter multiply -->
 
