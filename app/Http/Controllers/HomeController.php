@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SavedAnimeStatusEnum;
 use App\Models\SavedAnime;
 use App\Services\JikanMoeAnimesService;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class HomeController extends Controller
         return inertia('Home', [
             'animes' => JikanMoeAnimesService::getTopTen(),
             'saved_animes' => $saved_animes,
+            'saved_anime_status' => SavedAnimeStatusEnum::getSelectArrayPt(),
         ]);
     }
 }

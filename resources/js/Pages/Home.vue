@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, reactive } from "vue";
 import { Head, router } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
@@ -7,21 +7,23 @@ import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
-import { reactive } from "vue";
 
 import { initFlowbite } from "flowbite";
 
 const props = defineProps({
     animes: Object,
     saved_animes: Object,
+    saved_anime_status: Array,
 });
 
 const query_input = ref("");
 
-const saved_order_by = ref("last_watched_at");
-
 const saved_q = ref("");
 
+const form_saved_anime = reactive({
+    order_by: "last_watched_at",
+    status: "Watching",
+});
 const saved_order_by_options = reactive([
     { value: "last_watched_at", label: "Último assistido" },
     { value: "title", label: "Nome" },
@@ -33,12 +35,16 @@ const saved_animes_filtered = computed(() =>
     )
 );
 
-watch(saved_order_by, async (_new, _old) => {
+watch(form_saved_anime, async (_new, _old) => {
     router.get(
         route("home"),
         {
-            orderBy: saved_order_by.value,
-            sort: saved_order_by.value === "last_watched_at" ? "desc" : "asc",
+            orderBy: form_saved_anime.order_by,
+            status: form_saved_anime.status,
+            sort:
+                form_saved_anime.order_by === "last_watched_at"
+                    ? "desc"
+                    : "asc",
         },
         {
             replace: true,
@@ -61,6 +67,7 @@ onMounted(() => {
     <Head title="Home" />
 
     <NewAuthLayout>
+        <pre>{{ form_saved_anime }}</pre>
         <div v-if="$page.props.auth.user" class="ml-6 mt-16 sm:ml-12">
             <h2
                 class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/60"
@@ -98,7 +105,7 @@ onMounted(() => {
 
                     <select
                         id="orderBy"
-                        v-model="saved_order_by"
+                        v-model="form_saved_anime.order_by"
                         class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
                         <option
@@ -111,29 +118,29 @@ onMounted(() => {
                     </select>
                 </HomeFilterSelect>
 
-                <!-- <HomeFilterSelect>
+                <HomeFilterSelect>
                     <label
-                        for="gender"
+                        for="status"
                         class="block w-24 min-w-fit text-sm font-medium text-white/50"
                     >
-                        Gêneros:
+                        Status:
                     </label>
 
-                    <AnimeSavedFilterSelect
-                        id="gender"
+                    <select
+                        id="status"
+                        v-model="form_saved_anime.status"
+                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
+                        <option class="text-black" value="">Todos</option>
                         <option
-                            v-for="option in [
-                                { label: 'Todos', value: '' },
-                                { label: 'Ação', value: 'action' },
-                            ]"
-                            :value="option.value"
+                            v-for="(option, index) in props.saved_anime_status"
+                            :value="option"
                             class="text-black"
                         >
-                            {{ option.label }}
+                            {{ index }}
                         </option>
-                    </AnimeSavedFilterSelect>
-                </HomeFilterSelect> -->
+                    </select>
+                </HomeFilterSelect>
             </div>
 
             <div class="mt-6 max-w-full">

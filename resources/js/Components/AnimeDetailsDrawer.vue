@@ -107,7 +107,7 @@ const selected_anime_store = useSelectedAnimeStore();
 
                         <div class="mt-6 flex flex-col gap-1 pl-4">
                             <label for="list" class="text-white/50">
-                                Lista
+                                Status
                             </label>
 
                             <select
