@@ -4,7 +4,6 @@ import { Head, router } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 
-import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
