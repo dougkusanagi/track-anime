@@ -43,8 +43,6 @@ function search() {
             </div>
         </div>
 
-        <!-- <pre>{{ already_on_list }}</pre> -->
-
         <div class="ml-6 mt-16 sm:ml-12">
             <div class="mt-6 flex-1">
                 <div

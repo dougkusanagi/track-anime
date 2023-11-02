@@ -9,6 +9,8 @@ import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
 import { reactive } from "vue";
 
+import { initFlowbite } from "flowbite";
+
 const props = defineProps({
     animes: Object,
     saved_animes: Object,
@@ -47,6 +49,8 @@ watch(saved_order_by, async (_new, _old) => {
 });
 
 onMounted(() => {
+    initFlowbite();
+
     if (query_input.value) {
         query_input.value.focus();
     }
