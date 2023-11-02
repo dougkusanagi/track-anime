@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('saved_animes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class);
 
             $table->bigInteger('mal_id');
             $table->string('title');
