@@ -22,7 +22,6 @@ class SavedAnime extends Model
 
     public function scopeHome(Builder $query, Request $request): Builder
     {
-        // dd($request->all());
         $order_by = $request->get('orderBy') ?? 'last_watched_at';
         $sort = $request->get('sort') ?? 'desc';
         $status = $request->has('status')
@@ -32,7 +31,7 @@ class SavedAnime extends Model
         return $query
             ->where([
                 'user_id', auth()->user()->id,
-                'status', $status->value ?? '',
+                // 'status', $status->value ?? '',
             ])
             ->orderBy($order_by, $sort);
     }

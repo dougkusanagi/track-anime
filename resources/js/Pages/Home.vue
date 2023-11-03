@@ -67,7 +67,6 @@ onMounted(() => {
     <Head title="Home" />
 
     <NewAuthLayout>
-        <pre>{{ form_saved_anime }}</pre>
         <div v-if="$page.props.auth.user" class="ml-6 mt-16 sm:ml-12">
             <h2
                 class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/60"
