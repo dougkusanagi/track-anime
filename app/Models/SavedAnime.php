@@ -29,10 +29,7 @@ class SavedAnime extends Model
             : null;
 
         return $query
-            ->where([
-                'user_id', auth()->user()->id,
-                // 'status', $status->value ?? '',
-            ])
+            ->where('user_id', auth()->user()->id)
             ->orderBy($order_by, $sort);
     }
 }
