@@ -24,6 +24,7 @@ class HomeController extends Controller
         return inertia('Home', [
             'animes' => JikanMoeAnimesService::getTopTen(),
             'saved_animes' => $saved_animes,
+            'saved_anime_status' => SavedAnimeStatusEnum::getSelectArrayPt(),
         ]);
     }
 }

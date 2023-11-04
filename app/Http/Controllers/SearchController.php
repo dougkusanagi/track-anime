@@ -12,9 +12,7 @@ class SearchController
     {
         return inertia('Search', [
             'animes' => JikanMoeAnimesService::queryFromRequest($request)['data'] ?? [],
-            'already_on_list' => auth()->user()
-                ? SavedAnime::where('user_id', auth()->user()->id)->pluck('mal_id')->toArray()
-                : [],
+            'already_on_list' => SavedAnime::all()->pluck('mal_id')->toArray(),
         ]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\SavedAnimeStatusEnum;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -36,18 +35,17 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn () => [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
             'flash' => [
-                'message' => fn () => session('message'),
-                'success' => fn () => session('success'),
-                'info' => fn () => session('info'),
-                'warning' => fn () => session('warning'),
-                'error' => fn () => session('error'),
+                'message' => fn() => session('message'),
+                'success' => fn() => session('success'),
+                'info' => fn() => session('info'),
+                'warning' => fn() => session('warning'),
+                'error' => fn() => session('error'),
             ],
-            'saved_anime_status_list' => SavedAnimeStatusEnum::getSelectArrayPt(),
         ];
     }
 }

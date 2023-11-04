@@ -13,8 +13,8 @@ class SavedAnimeController
     {
         /** @var \App\Models\User */
         $user = auth()->user();
-        if (!$user) {
-            return back()
+        if ($user) {
+            return to_route('home')
                 ->with('error', 'Para salvar um anime, é preciso estar logado.');
         }
 
