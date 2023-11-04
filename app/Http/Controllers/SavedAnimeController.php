@@ -11,14 +11,14 @@ class SavedAnimeController
 {
     public function store(Request $request)
     {
-        if (!auth()->user()) {
+        /** @var \App\Models\User */
+        $user = auth()->user();
+        if ($user) {
             return to_route('home')
                 ->with('error', 'Para salvar um anime, é preciso estar logado.');
         }
 
-        $saved_anime = SavedAnime::where('mal_id', $request->mal_id)->first();
-
-        if ($saved_anime) {
+        if ($this->alreadyExists($request)) {
             return to_route('home')
                 ->with('error', 'Este anime já está na sua lista.');
         }
@@ -30,8 +30,6 @@ class SavedAnimeController
                 ->with('error', 'Anime não encontrado.');
         }
 
-        /** @var \App\Models\User */
-        $user = auth()->user();
         $user->savedAnimes()->create([
             'mal_id' => $anime['mal_id'],
             'title' => $anime['title'],
@@ -83,5 +81,10 @@ class SavedAnimeController
         ]);
 
         Session::flash('success', 'Link removido com sucesso.');
+    }
+
+    private function alreadyExists(Request $request)
+    {
+        return (bool) SavedAnime::where('mal_id', $request->mal_id)->first();
     }
 }
