@@ -24,12 +24,10 @@ class SavedAnime extends Model
     {
         $order_by = $request->get('orderBy') ?? 'last_watched_at';
         $sort = $request->get('sort') ?? 'desc';
-        $status = $request->has('status')
-            ? SavedAnimeStatusEnum::from($request->get('status'))
-            : null;
 
         return $query
             ->where('user_id', auth()->user()->id)
+            ->when($request->get('status'), fn ($query) => $query->where('status', $request->get('status')))
             ->orderBy($order_by, $sort);
     }
 }
