@@ -11,6 +11,11 @@ class SavedAnimeController
 {
     public function store(Request $request)
     {
+        if (!auth()->user()) {
+            return to_route('home')
+                ->with('error', 'Para salvar um anime, é preciso estar logado.');
+        }
+
         $saved_anime = SavedAnime::where('mal_id', $request->mal_id)->first();
 
         if ($saved_anime) {
