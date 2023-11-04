@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, watch, reactive } from "vue";
-import { Head, router, usePage } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 
@@ -13,6 +13,7 @@ import { initFlowbite } from "flowbite";
 const props = defineProps({
     animes: Object,
     saved_animes: Object,
+    saved_anime_status: Array,
 });
 
 const query_input = ref("");
@@ -131,8 +132,7 @@ onMounted(() => {
                     >
                         <option class="text-black" value="">Todos</option>
                         <option
-                            v-for="(option, index) in usePage().props
-                                .saved_anime_status_list"
+                            v-for="(option, index) in props.saved_anime_status"
                             :value="option"
                             class="text-black"
                         >
@@ -149,8 +149,8 @@ onMounted(() => {
                 >
                     <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
-                        :key="anime.id"
                         :anime="anime"
+                        :key="anime.id"
                     />
                 </div>
             </div>
