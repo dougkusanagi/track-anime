@@ -1,14 +1,14 @@
 <script setup>
-import AppInputBasic from "./AppInputBasic.vue";
+import { watch, reactive } from "vue";
+import { router, usePage } from "@inertiajs/vue3";
 
-import StarOutline from "@/Icons/HeroIcons/StarOutline.vue";
-import StarSolid from "@/Icons/HeroIcons/StarSolid.vue";
+import AppSelectBasic from "@/Components/AppSelectBasic.vue";
+import AppInputBasic from "@/Components/AppInputBasic.vue";
+
 import HeartOutline from "@/Icons/HeroIcons/HeartOutline.vue";
+import StarOutline from "@/Icons/HeroIcons/StarOutline.vue";
 import HeartSolid from "@/Icons/HeroIcons/HeartSolid.vue";
-import { router, useForm, usePage } from "@inertiajs/vue3";
-import { watch } from "vue";
-import { reactive } from "vue";
-import AppSelectBasic from "./AppSelectBasic.vue";
+import StarSolid from "@/Icons/HeroIcons/StarSolid.vue";
 
 const props = defineProps({
     anime: Object,
@@ -41,8 +41,7 @@ watch(props, () => {
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
-        <!-- <pre>{{ form }}</pre> -->
-
+        <!-- <pre>{{ props.anime }}</pre> -->
         <div v-if="anime">
             <div class="mb-10 flex">
                 <!-- button save -->
@@ -93,7 +92,7 @@ watch(props, () => {
             </div>
 
             <div class="flex">
-                <img :src="anime.details.images.webp.image_url" alt="" />
+                <img :src="anime.details.images.jpg.image_url" alt="" />
 
                 <div class="flex flex-1 flex-col justify-between">
                     <div
