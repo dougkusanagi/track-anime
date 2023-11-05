@@ -4,7 +4,6 @@ import { router } from "@inertiajs/vue3";
 
 import useDebounce from "@/Composables/useDebounce";
 import useUrl from "@/Composables/useUrl";
-import { useSelectedAnimeStore } from "@/Stores/useSelectedAnimeStore.js";
 import { useToast } from "vue-toastification";
 
 import ButtonChangeEp from "@/Components/ButtonChangeEp.vue";
@@ -22,20 +21,6 @@ const props = defineProps({
 
 const toast = useToast();
 const new_link = ref("");
-const selected_anime_store = useSelectedAnimeStore();
-let drawer_anime_details = null;
-
-const openAnimeDetails = async (clicked_anime) => {
-    selected_anime_store.selected_anime = clicked_anime;
-
-    if (!drawer_anime_details) {
-        drawer_anime_details = new Drawer(
-            document.getElementById("drawer-saved-anime-details")
-        );
-    }
-
-    drawer_anime_details.show();
-};
 
 function updateSavedAnimeEpisode(anime, episode_count) {
     useDebounce(() => {
@@ -58,7 +43,6 @@ function decreaseSavedAnimeEpisode(anime) {
 }
 
 function addLink() {
-    console.log(new_link.value);
     if (!useUrl().isUrl(new_link.value)) {
         new_link.value = "";
         toast.error("URL inválida");
@@ -104,7 +88,7 @@ function removeAnime() {
 
         <button
             class="outline outline-2 outline-transparent focus:shadow-xl focus:shadow-indigo-600 focus:outline-2 focus:outline-indigo-600"
-            @click="openAnimeDetails(anime)"
+            @click="$emit('changeSelectedAnime', anime)"
         >
             <img
                 class="min-w-96 object-cover"

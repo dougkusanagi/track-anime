@@ -27,12 +27,13 @@ use Illuminate\Support\Facades\Route;
 //     ]);
 // });
 
-Route::get('/', fn() => redirect()->route('home'));
+Route::get('/', fn () => redirect()->route('home'));
 Route::get('/home', HomeController::class)->name('home');
 Route::get('/search', SearchController::class)->name('search');
 
 Route::controller(SavedAnimeController::class)->group(function () {
     Route::post('/saved-anime', 'store')->name('saved-anime.store');
+    Route::put('/saved-anime/update', 'update')->name('saved-anime.update');
     Route::put('/saved-anime/update-episode', 'updateAnimeEpisode')->name('saved-anime.save-episode');
     Route::put('/saved-anime/update-link', 'updateAnimeLink')->name('saved-anime.update-link');
     Route::put('/saved-anime/delete-link/{anime}', 'deleteLink')->name('saved-anime.delete-link');

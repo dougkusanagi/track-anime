@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SavedAnimeStatusEnum;
 use App\Models\SavedAnime;
 use App\Services\JikanMoeAnimesService;
 use Illuminate\Http\Request;
@@ -39,6 +40,25 @@ class SavedAnimeController
 
         return to_route('home')
             ->with('success', 'Anime salvo com sucesso como (Assistindo).');
+    }
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
+
+        $status = $request->status
+            ? SavedAnimeStatusEnum::from($request->status)
+            : SavedAnimeStatusEnum::Watching;
+
+        SavedAnime::findOrFail($request->id)
+            ->update([
+                'status' => $status,
+                'rewatch_count' => $request->rewatch_count,
+                'score' => $request->score,
+            ]);
+
+        return back()
+            ->with('success', 'Informações atualizadas com sucesso.');
     }
 
     public function updateAnimeEpisode(Request $request)

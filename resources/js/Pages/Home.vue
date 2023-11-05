@@ -1,28 +1,50 @@
 <script setup>
 import { ref, computed, onMounted, watch, reactive } from "vue";
-import { Head, router } from "@inertiajs/vue3";
+import { Head, router, usePage } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
+import AnimeDetailsDrawer from "@/Components/AnimeDetailsDrawer.vue";
 
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
 import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
 
 import { initFlowbite } from "flowbite";
+import { onBeforeMount } from "vue";
 
 const props = defineProps({
     animes: Object,
     saved_animes: Object,
-    saved_anime_status: Array,
 });
 
 const query_input = ref("");
 
 const saved_q = ref("");
 
+const selected_anime = ref(props.saved_animes[0]);
+
+let drawer_anime_details = null;
+
+onBeforeMount(() => {
+    const anime = { ...props.saved_animes[0] };
+    selected_anime.value = anime;
+});
+
+async function openAnimeDetails(clicked_anime) {
+    selected_anime.value = clicked_anime;
+
+    if (!drawer_anime_details) {
+        drawer_anime_details = new Drawer(
+            document.getElementById("drawer-saved-anime-details")
+        );
+    }
+
+    drawer_anime_details.show();
+}
+
 const form_saved_anime = reactive({
     order_by: "last_watched_at",
-    status: "Watching",
+    status: "",
 });
 const saved_order_by_options = reactive([
     { value: "last_watched_at", label: "Último assistido" },
@@ -67,6 +89,8 @@ onMounted(() => {
     <Head title="Home" />
 
     <NewAuthLayout>
+        <AnimeDetailsDrawer :anime="selected_anime" />
+
         <div v-if="$page.props.auth.user" class="ml-6 mt-16 sm:ml-12">
             <h2
                 class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/60"
@@ -131,8 +155,10 @@ onMounted(() => {
                         class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
                         <option class="text-black" value="">Todos</option>
+
                         <option
-                            v-for="(option, index) in props.saved_anime_status"
+                            v-for="(option, index) in usePage().props
+                                .saved_anime_status_list"
                             :value="option"
                             class="text-black"
                         >
@@ -145,12 +171,13 @@ onMounted(() => {
             <div class="mt-6 max-w-full">
                 <!-- <div class="flex gap-4 overflow-x-auto py-2"> -->
                 <div
-                    class="mr-6 grid grid-cols-2 gap-y-4 overflow-x-auto py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
+                    class="mr-6 grid grid-cols-2 gap-y-4 py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
                 >
                     <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
                         :anime="anime"
                         :key="anime.id"
+                        @changeSelectedAnime="openAnimeDetails"
                     />
                 </div>
             </div>

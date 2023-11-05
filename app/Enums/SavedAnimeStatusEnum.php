@@ -5,7 +5,7 @@ namespace App\Enums;
 enum SavedAnimeStatusEnum: string
 {
     case Watching = 'Watching';
-    case PlanToWatch = 'Plan to Watch';
+    case PlanToWatch = 'PlanToWatch';
     case Completed = 'Completed';
     case Dropped = 'Dropped';
     case Paused = 'Paused';
