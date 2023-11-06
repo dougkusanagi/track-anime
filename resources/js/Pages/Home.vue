@@ -31,6 +31,7 @@ onBeforeMount(() => {
 });
 
 async function openAnimeDetails(clicked_anime) {
+    console.log(clicked_anime);
     selected_anime.value = clicked_anime;
 
     if (!drawer_anime_details) {
