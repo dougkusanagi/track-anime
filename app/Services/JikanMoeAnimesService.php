@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -45,11 +46,42 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                function () use ($query) {
+                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
+
+                    if ($response->failed()) {
+                        return [];
+                    }
+
+                    return $response->json();
+                }
             );
     }
 
-    public static function byMalIdCached(int $mal_id)
+    public static function getTopTen(): array
+    {
+        return cache()
+            ->remember(
+                'top_ten_animes',
+                now()->addDays(1),
+                function () {
+                    $query = http_build_query([
+                        'limit' => 10,
+                        'order_by' => 'popularity',
+                    ]);
+
+                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
+
+                    if ($response->failed()) {
+                        return [];
+                    }
+
+                    return $response->json();
+                }
+            );
+    }
+
+    public static function byMalIdCached(int $mal_id): array
     {
         return cache()
             ->remember(
@@ -59,23 +91,26 @@ class JikanMoeAnimesService
             );
     }
 
-    private function byMalId(int $mal_id)
+    private function toResource(Response $response)
     {
-        return Http::get(self::BASE_URL . '/anime/' . $mal_id)->json();
+        return $response
+            ->collect('data')
+            ->only([
+                'mal_id', 'title', 'images', 'status', 'episodes', 'type', 'synopsis', 'genres', 'score', 'year', 'airing', 'season'
+            ])
+            ->toArray();
     }
 
-    public static function getTopTen()
+    private function byMalId(int $mal_id): array
     {
-        $query = http_build_query([
-            'limit' => 10,
-            'order_by' => 'popularity',
-        ]);
+        $response = Http::get(self::BASE_URL . '/anime/' . $mal_id);
 
-        return cache()
-            ->remember(
-                'top_ten_animes',
-                now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
-            );
+        if ($response->failed()) {
+            return [];
+        }
+
+        return [
+            'data' => $this->toResource($response),
+        ];
     }
 }
