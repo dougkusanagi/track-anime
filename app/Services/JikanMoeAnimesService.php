@@ -49,22 +49,14 @@ class JikanMoeAnimesService
             );
     }
 
-    public static function findByMalId(int $mal_id)
+    public static function byMalIdCached(int $mal_id)
     {
-        $instance = new self();
-
-        $cached = cache()
+        return cache()
             ->remember(
                 'mal_id_' . $mal_id,
                 now()->addDays(1),
-                fn () => $instance->byMalId($mal_id)
+                fn () => (new self)->byMalId($mal_id)
             );
-
-        if ($cached) {
-            return $cached;
-        }
-
-        return $instance->byMalId($mal_id);
     }
 
     private function byMalId(int $mal_id)

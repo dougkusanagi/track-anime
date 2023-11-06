@@ -17,7 +17,7 @@ class HomeController extends Controller
 
         $saved_animes->map(
             fn ($saved_anime) => $saved_anime->details =
-                JikanMoeAnimesService::findByMalId($saved_anime->mal_id)['data'] ??
+                JikanMoeAnimesService::byMalIdCached($saved_anime->mal_id)['data'] ??
                 []
         );
 

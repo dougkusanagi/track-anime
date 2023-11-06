@@ -31,6 +31,7 @@ watch(props, () => {
     for (const key in form) {
         form[key] = props.anime[key];
     }
+    console.log(anime.details.images);
 });
 </script>
 

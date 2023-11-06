@@ -24,7 +24,7 @@ class SavedAnimeController
                 ->with('error', 'Este anime já está na sua lista.');
         }
 
-        $anime = JikanMoeAnimesService::findByMalId($request->mal_id)['data'] ?? null;
+        $anime = JikanMoeAnimesService::byMalIdCached($request->mal_id)['data'] ?? null;
 
         if (!$anime) {
             return to_route('home')
