@@ -87,11 +87,20 @@ class JikanMoeAnimesService
             ->remember(
                 'mal_id_' . $mal_id,
                 now()->addDays(1),
-                fn () => (new self)->byMalId($mal_id)
+                fn () => self::byMalId($mal_id)
             );
     }
 
-    private function toResource(Response $response)
+    public static function byMalId(int $mal_id): array
+    {
+        $response = Http::get(self::BASE_URL . '/anime/' . $mal_id);
+
+        return $response->failed()
+            ? ['data' => self::toResource($response)]
+            : [];
+    }
+
+    private static function toResource(Response $response)
     {
         return $response
             ->collect('data')
@@ -99,18 +108,5 @@ class JikanMoeAnimesService
                 'mal_id', 'title', 'images', 'status', 'episodes', 'type', 'synopsis', 'genres', 'score', 'year', 'airing', 'season'
             ])
             ->toArray();
-    }
-
-    private function byMalId(int $mal_id): array
-    {
-        $response = Http::get(self::BASE_URL . '/anime/' . $mal_id);
-
-        if ($response->failed()) {
-            return [];
-        }
-
-        return [
-            'data' => $this->toResource($response),
-        ];
     }
 }

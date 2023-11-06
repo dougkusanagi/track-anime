@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\SavedAnimeStatusEnum;
 use App\Models\SavedAnime;
 use App\Services\JikanMoeAnimesService;
 use Illuminate\Http\Request;
