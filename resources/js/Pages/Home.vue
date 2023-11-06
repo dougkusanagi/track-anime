@@ -13,7 +13,7 @@ import { initFlowbite } from "flowbite";
 import { onBeforeMount } from "vue";
 
 const props = defineProps({
-    animes: Object,
+    top_ten_animes: Object,
     saved_animes: Object,
 });
 
@@ -21,7 +21,7 @@ const query_input = ref("");
 
 const saved_q = ref("");
 
-const selected_anime = ref(props.saved_animes[0]);
+const selected_anime = ref(props.top_ten_animes[0]);
 
 let drawer_anime_details = null;
 

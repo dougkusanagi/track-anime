@@ -22,7 +22,7 @@ class HomeController extends Controller
         );
 
         return inertia('Home', [
-            'animes' => JikanMoeAnimesService::getTopTen(),
+            'top_ten_animes' => JikanMoeAnimesService::getTopTen(),
             'saved_animes' => $saved_animes,
         ]);
     }

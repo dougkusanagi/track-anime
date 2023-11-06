@@ -41,8 +41,7 @@ watch(props, () => {
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
-        <!-- <pre>{{ props.anime }}</pre> -->
-        <div v-if="anime">
+        <div v-if="anime.details">
             <div class="mb-10 flex">
                 <!-- button save -->
                 <button
@@ -68,6 +67,7 @@ watch(props, () => {
                     Salvar
                 </button>
 
+                <!-- button close -->
                 <button
                     type="button"
                     class="absolute right-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
