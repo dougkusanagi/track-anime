@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -45,45 +46,67 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                function () use ($query) {
+                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
+
+                    if ($response->failed()) {
+                        return [];
+                    }
+
+                    return $response->json();
+                }
             );
     }
 
-    public static function findByMalId(int $mal_id)
+    public static function getTopTen(): array
     {
-        $instance = new self();
-
-        $cached = cache()
-            ->remember(
-                'mal_id_' . $mal_id,
-                now()->addDays(1),
-                fn () => $instance->byMalId($mal_id)
-            );
-
-        if ($cached) {
-            return $cached;
-        }
-
-        return $instance->byMalId($mal_id);
-    }
-
-    private function byMalId(int $mal_id)
-    {
-        return Http::get(self::BASE_URL . '/anime/' . $mal_id)->json();
-    }
-
-    public static function getTopTen()
-    {
-        $query = http_build_query([
-            'limit' => 10,
-            'order_by' => 'popularity',
-        ]);
-
         return cache()
             ->remember(
                 'top_ten_animes',
                 now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+                function () {
+                    $query = http_build_query([
+                        'limit' => 10,
+                        'order_by' => 'popularity',
+                    ]);
+
+                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
+
+                    if ($response->failed()) {
+                        return [];
+                    }
+
+                    return $response->json();
+                }
             );
+    }
+
+    public static function byMalIdCached(int $mal_id): array
+    {
+        return cache()
+            ->remember(
+                'mal_id_' . $mal_id,
+                now()->addDays(1),
+                fn () => self::byMalId($mal_id)
+            );
+    }
+
+    public static function byMalId(int $mal_id): array
+    {
+        $response = Http::get(self::BASE_URL . '/anime/' . $mal_id);
+
+        return $response->failed()
+            ? ['data' => self::toResource($response)]
+            : [];
+    }
+
+    private static function toResource(Response $response)
+    {
+        return $response
+            ->collect('data')
+            ->only([
+                'mal_id', 'title', 'images', 'status', 'episodes', 'type', 'synopsis', 'genres', 'score', 'year', 'airing', 'season'
+            ])
+            ->toArray();
     }
 }

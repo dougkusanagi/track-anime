@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SavedAnimeStatusEnum;
 use App\Models\SavedAnime;
 use App\Services\JikanMoeAnimesService;
 use Illuminate\Http\Request;
@@ -11,22 +12,25 @@ class SavedAnimeController
 {
     public function store(Request $request)
     {
-        $saved_anime = SavedAnime::where('mal_id', $request->mal_id)->first();
+        /** @var \App\Models\User */
+        $user = auth()->user();
+        if (!$user) {
+            return back()
+                ->with('error', 'Para salvar um anime, é preciso estar logado.');
+        }
 
-        if ($saved_anime) {
+        if ($this->alreadyExists($request)) {
             return to_route('home')
                 ->with('error', 'Este anime já está na sua lista.');
         }
 
-        $anime = JikanMoeAnimesService::findByMalId($request->mal_id)['data'] ?? null;
+        $anime = JikanMoeAnimesService::byMalIdCached($request->mal_id)['data'] ?? null;
 
         if (!$anime) {
             return to_route('home')
                 ->with('error', 'Anime não encontrado.');
         }
 
-        /** @var \App\Models\User */
-        $user = auth()->user();
         $user->savedAnimes()->create([
             'mal_id' => $anime['mal_id'],
             'title' => $anime['title'],
@@ -36,6 +40,25 @@ class SavedAnimeController
 
         return to_route('home')
             ->with('success', 'Anime salvo com sucesso como (Assistindo).');
+    }
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
+
+        $status = $request->status
+            ? SavedAnimeStatusEnum::from($request->status)
+            : SavedAnimeStatusEnum::Watching;
+
+        SavedAnime::findOrFail($request->id)
+            ->update([
+                'status' => $status,
+                'rewatch_count' => $request->rewatch_count,
+                'score' => $request->score,
+            ]);
+
+        return back()
+            ->with('success', 'Informações atualizadas com sucesso.');
     }
 
     public function updateAnimeEpisode(Request $request)
@@ -78,5 +101,10 @@ class SavedAnimeController
         ]);
 
         Session::flash('success', 'Link removido com sucesso.');
+    }
+
+    private function alreadyExists(Request $request)
+    {
+        return (bool) SavedAnime::where('mal_id', $request->mal_id)->first();
     }
 }

@@ -1,26 +1,52 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
-import { Head, router } from "@inertiajs/vue3";
+import { ref, computed, onMounted, watch, reactive } from "vue";
+import { Head, router, usePage } from "@inertiajs/vue3";
 
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
+import AnimeDetailsDrawer from "@/Components/AnimeDetailsDrawer.vue";
 
-import AnimeSavedFilterSelect from "@/Components/AnimeSavedFilterSelect.vue";
 import HomeFilterSelect from "@/Components/HomeFilterSelect.vue";
-import SavedAnimeDropdown from "@/Components/SavedAnimeDropdown.vue";
+import SavedAnimeCard from "@/Components/SavedAnimeCard.vue";
 import AppButton from "@/Components/AppButton.vue";
-import { reactive } from "vue";
+
+import { initFlowbite } from "flowbite";
+import { onBeforeMount } from "vue";
 
 const props = defineProps({
-    animes: Object,
+    top_ten_animes: Object,
     saved_animes: Object,
 });
 
 const query_input = ref("");
 
-const saved_order_by = ref("last_watched_at");
-
 const saved_q = ref("");
 
+const selected_anime = ref(props.top_ten_animes[0]);
+
+let drawer_anime_details = null;
+
+onBeforeMount(() => {
+    const anime = { ...props.saved_animes[0] };
+    selected_anime.value = anime;
+});
+
+async function openAnimeDetails(clicked_anime) {
+    console.log(clicked_anime);
+    selected_anime.value = clicked_anime;
+
+    if (!drawer_anime_details) {
+        drawer_anime_details = new Drawer(
+            document.getElementById("drawer-saved-anime-details")
+        );
+    }
+
+    drawer_anime_details.show();
+}
+
+const form_saved_anime = reactive({
+    order_by: "last_watched_at",
+    status: "",
+});
 const saved_order_by_options = reactive([
     { value: "last_watched_at", label: "Último assistido" },
     { value: "title", label: "Nome" },
@@ -32,12 +58,16 @@ const saved_animes_filtered = computed(() =>
     )
 );
 
-watch(saved_order_by, async (_new, _old) => {
+watch(form_saved_anime, async (_new, _old) => {
     router.get(
         route("home"),
         {
-            orderBy: saved_order_by.value,
-            sort: saved_order_by.value === "last_watched_at" ? "desc" : "asc",
+            orderBy: form_saved_anime.order_by,
+            status: form_saved_anime.status,
+            sort:
+                form_saved_anime.order_by === "last_watched_at"
+                    ? "desc"
+                    : "asc",
         },
         {
             replace: true,
@@ -47,13 +77,21 @@ watch(saved_order_by, async (_new, _old) => {
     );
 });
 
-onMounted(() => query_input.value.focus());
+onMounted(() => {
+    initFlowbite();
+
+    if (query_input.value) {
+        query_input.value.focus();
+    }
+});
 </script>
 
 <template>
     <Head title="Home" />
 
     <NewAuthLayout>
+        <AnimeDetailsDrawer :anime="selected_anime" />
+
         <div v-if="$page.props.auth.user" class="ml-6 mt-16 sm:ml-12">
             <h2
                 class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/60"
@@ -91,7 +129,7 @@ onMounted(() => query_input.value.focus());
 
                     <select
                         id="orderBy"
-                        v-model="saved_order_by"
+                        v-model="form_saved_anime.order_by"
                         class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
                         <option
@@ -104,37 +142,43 @@ onMounted(() => query_input.value.focus());
                     </select>
                 </HomeFilterSelect>
 
-                <!-- <HomeFilterSelect>
+                <HomeFilterSelect>
                     <label
-                        for="gender"
+                        for="status"
                         class="block w-24 min-w-fit text-sm font-medium text-white/50"
                     >
-                        Gêneros:
+                        Status:
                     </label>
 
-                    <AnimeSavedFilterSelect
-                        id="gender"
+                    <select
+                        id="status"
+                        v-model="form_saved_anime.status"
+                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
+                        <option class="text-black" value="">Todos</option>
+
                         <option
-                            v-for="option in [
-                                { label: 'Todos', value: '' },
-                                { label: 'Ação', value: 'action' },
-                            ]"
-                            :value="option.value"
+                            v-for="(option, index) in usePage().props
+                                .saved_anime_status_list"
+                            :value="option"
                             class="text-black"
                         >
-                            {{ option.label }}
+                            {{ index }}
                         </option>
-                    </AnimeSavedFilterSelect>
-                </HomeFilterSelect> -->
+                    </select>
+                </HomeFilterSelect>
             </div>
 
             <div class="mt-6 max-w-full">
-                <div class="flex gap-4 overflow-x-auto py-2">
-                    <SavedAnimeDropdown
+                <!-- <div class="flex gap-4 overflow-x-auto py-2"> -->
+                <div
+                    class="mr-6 grid grid-cols-2 gap-y-4 py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
+                >
+                    <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
                         :anime="anime"
                         :key="anime.id"
+                        @changeSelectedAnime="openAnimeDetails"
                     />
                 </div>
             </div>

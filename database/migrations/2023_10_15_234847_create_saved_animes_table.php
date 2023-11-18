@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\SavedAnimeScoreEnum;
 use App\Enums\SavedAnimeStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -21,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('mal_id');
             $table->string('title');
             $table->string('notes')->nullable();
-            $table->enum('status', SavedAnimeStatusEnum::names())->default(SavedAnimeStatusEnum::Watching->name);
-            $table->enum('score', SavedAnimeScoreEnum::names())->default(SavedAnimeScoreEnum::Zero->name);
+            $table->enum('status', SavedAnimeStatusEnum::names())->default(SavedAnimeStatusEnum::Watching->value);
+            $table->integer('score')->default(0);
             $table->integer('rewatch_count')->default(0);
             $table->integer('episode_count')->default(0);
             $table->boolean('favorite')->default(false);

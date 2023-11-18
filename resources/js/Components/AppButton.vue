@@ -8,7 +8,7 @@ import { Link } from "@inertiajs/vue3";
         <Link
             :href="route('login')"
             v-bind="$attrs"
-            class="rounded bg-indigo-800 px-3 py-2 text-sm font-bold text-white/80 shadow-lg shadow-indigo-700/60 transition-all hover:text-white hover:brightness-125 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded bg-indigo-800 px-3 py-2 text-sm font-bold text-white/80 shadow-lg shadow-indigo-700/40 transition-all hover:text-white hover:brightness-125 disabled:cursor-not-allowed disabled:opacity-50"
         >
             <slot />
         </Link>
