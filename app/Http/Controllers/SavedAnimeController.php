@@ -31,6 +31,10 @@ class SavedAnimeController
                 ->with('error', 'Anime não encontrado.');
         }
 
+<<<<<<< HEAD
+=======
+        $user = auth()->user();
+>>>>>>> main
         $user->savedAnimes()->create([
             'mal_id' => $anime['mal_id'],
             'title' => $anime['title'],
