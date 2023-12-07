@@ -73,7 +73,6 @@ class JikanMoeAnimesService
                 'top_ten_animes',
                 now()->addDays(1),
                 fn () => Http::get(self::BASE_URL . '/anime?' . $query)
-                    ->throw()
                     ->json()
             );
     }
