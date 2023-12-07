@@ -36,17 +36,18 @@ watch(props, () => {
 
 <template>
     <div
+        v-if="anime"
         id="drawer-saved-anime-details"
         class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-black/10 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
         tabindex="-1"
         aria-labelledby="drawer-label"
     >
         <div v-if="anime.details">
-            <div class="mb-10 flex">
+            <div class="flex mb-10">
                 <!-- button save -->
                 <button
                     @click.prevent="save"
-                    class="flex items-center gap-2 rounded bg-indigo-800 stroke-white px-3 py-1 font-bold text-white/80 shadow-lg shadow-indigo-700/40 transition-all hover:text-white hover:brightness-125 disabled:cursor-not-allowed disabled:opacity-50"
+                    class="flex items-center gap-2 px-3 py-1 font-bold transition-all bg-indigo-800 rounded shadow-lg stroke-white text-white/80 shadow-indigo-700/40 hover:text-white hover:brightness-125 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <svg
                         width="20"
@@ -55,7 +56,7 @@ watch(props, () => {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         stroke-width="1.5"
-                        class="h-4 w-4"
+                        class="w-4 h-4"
                     >
                         <path
                             d="M5 1V4.4C5 4.96005 5 5.24008 5.10899 5.45399C5.20487 5.64215 5.35785 5.79513 5.54601 5.89101C5.75992 6 6.03995 6 6.6 6H13.4C13.9601 6 14.2401 6 14.454 5.89101C14.6422 5.79513 14.7951 5.64215 14.891 5.45399C15 5.24008 15 4.96005 15 4.4V2M15 19V12.6C15 12.0399 15 11.7599 14.891 11.546C14.7951 11.3578 14.6422 11.2049 14.454 11.109C14.2401 11 13.9601 11 13.4 11H6.6C6.03995 11 5.75992 11 5.54601 11.109C5.35785 11.2049 5.20487 11.3578 5.10899 11.546C5 11.7599 5 12.0399 5 12.6V19M19 7.32548V14.2C19 15.8802 19 16.7202 18.673 17.362C18.3854 17.9265 17.9265 18.3854 17.362 18.673C16.7202 19 15.8802 19 14.2 19H5.8C4.11984 19 3.27976 19 2.63803 18.673C2.07354 18.3854 1.6146 17.9265 1.32698 17.362C1 16.7202 1 15.8802 1 14.2V5.8C1 4.11984 1 3.27976 1.32698 2.63803C1.6146 2.07354 2.07354 1.6146 2.63803 1.32698C3.27976 1 4.11984 1 5.8 1H12.6745C13.1637 1 13.4083 1 13.6385 1.05526C13.8425 1.10425 14.0376 1.18506 14.2166 1.29472C14.4184 1.4184 14.5914 1.59135 14.9373 1.93726L18.0627 5.06274C18.4086 5.40865 18.5816 5.5816 18.7053 5.78343C18.8149 5.96237 18.8957 6.15746 18.9447 6.36154C19 6.59171 19 6.8363 19 7.32548Z"
@@ -73,7 +74,7 @@ watch(props, () => {
                     class="absolute right-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                     <svg
-                        class="h-3 w-3"
+                        class="w-3 h-3"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -94,9 +95,9 @@ watch(props, () => {
             <div class="flex">
                 <img :src="anime.details.images.jpg.image_url" alt="" />
 
-                <div class="flex flex-1 flex-col justify-between">
+                <div class="flex flex-col justify-between flex-1">
                     <div
-                        class="grid w-full grid-cols-3 items-center divide-x-2 divide-white/20"
+                        class="grid items-center w-full grid-cols-3 divide-x-2 divide-white/20"
                     >
                         <span
                             class="flex justify-center text-lg font-black text-white"
@@ -122,23 +123,23 @@ watch(props, () => {
                     </div>
 
                     <div>
-                        <div class="mx-4 mt-2 flex gap-2">
+                        <div class="flex gap-2 mx-4 mt-2">
                             <span
-                                class="rounded-lg border border-emerald-600/80 bg-emerald-600/50 px-2 py-1 text-xs font-bold"
+                                class="px-2 py-1 text-xs font-bold border rounded-lg border-emerald-600/80 bg-emerald-600/50"
                                 v-if="anime.details.airing"
                             >
                                 Em Exibição
                             </span>
 
                             <span
-                                class="rounded-lg border border-teal-600/80 bg-teal-600/50 px-2 py-1 text-xs font-bold"
+                                class="px-2 py-1 text-xs font-bold border rounded-lg border-teal-600/80 bg-teal-600/50"
                                 v-else
                             >
                                 Finalizado
                             </span>
                         </div>
 
-                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                        <div class="flex flex-col gap-1 pl-4 mt-6">
                             <label for="list" class="text-white/50">
                                 Status
                             </label>
@@ -155,7 +156,7 @@ watch(props, () => {
                             </AppSelectBasic>
                         </div>
 
-                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                        <div class="flex flex-col gap-1 pl-4 mt-6">
                             <label for="rewatched" class="text-white/50">
                                 Vezes Reassistidas
                             </label>
@@ -169,7 +170,7 @@ watch(props, () => {
                             />
                         </div>
 
-                        <div class="mt-6 flex flex-col gap-1 pl-4">
+                        <div class="flex flex-col gap-1 pl-4 mt-6">
                             <label for="rating" class="text-white/50">
                                 Dê sua nota
                             </label>
@@ -194,12 +195,12 @@ watch(props, () => {
                     {{ anime.details.title }}
                 </h4>
 
-                <div class="mt-6 flex flex-col">
+                <div class="flex flex-col mt-6">
                     <span class="text-sm text-white/40"> Gêneros: </span>
 
                     <div class="mt-2">
                         <span
-                            class="mr-2 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/80"
+                            class="px-2 py-1 mr-2 text-xs border rounded-lg border-white/10 bg-white/5 text-white/80"
                             v-for="genre in anime.details.genres"
                         >
                             {{ genre.name }}
@@ -207,7 +208,7 @@ watch(props, () => {
                     </div>
                 </div>
 
-                <div class="mt-6 flex flex-col">
+                <div class="flex flex-col mt-6">
                     <span class="text-sm text-white/40">Temporada:</span>
 
                     <div class="mt-2">

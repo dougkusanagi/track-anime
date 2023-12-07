@@ -14,12 +14,6 @@ class HomeController extends Controller
             ? SavedAnime::home($request)->get()
             : collect([]);
 
-        $saved_animes->map(
-            fn ($saved_anime) => $saved_anime->details =
-                JikanMoeAnimesService::byMalIdCached($saved_anime->mal_id)['data'] ??
-                []
-        );
-
         return inertia('Home', [
             'top_ten_animes' => JikanMoeAnimesService::getTopTen(),
             'saved_animes' => $saved_animes,

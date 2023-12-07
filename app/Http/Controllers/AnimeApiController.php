@@ -8,8 +8,8 @@ class AnimeApiController
 {
     public function getByMalId(int $mal_id)
     {
-        $anime = JikanMoeAnimesService::byMalIdCached($mal_id)['data'] ?? null;
+        $anime = JikanMoeAnimesService::byMalIdCached($mal_id);
 
-        return response()->json($anime);
+        return response()->json($anime ? $anime['data'] : null);
     }
 }

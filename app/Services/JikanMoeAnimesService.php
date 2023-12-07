@@ -76,12 +76,6 @@ class JikanMoeAnimesService
 
     public static function byMalIdCached(int $mal_id): array
     {
-        $cache = cache('mal_id_' . $mal_id);
-
-        if ($cache) {
-            return $cache;
-        }
-
         return cache()->remember(
             'mal_id_' . $mal_id,
             now()->addDays(1),

@@ -11,6 +11,7 @@ import AppButton from "@/Components/AppButton.vue";
 
 import { initFlowbite } from "flowbite";
 import { onBeforeMount } from "vue";
+import axios from "axios";
 
 const props = defineProps({
     top_ten_animes: Object,
@@ -30,9 +31,16 @@ onBeforeMount(() => {
     selected_anime.value = anime;
 });
 
+function getAnimeDetails(anime) {
+    return new Promise(async (resolve) => {
+        const { data } = await axios.get(route("anime-details", anime.mal_id));
+
+        resolve(data);
+    });
+}
+
 async function openAnimeDetails(clicked_anime) {
-    console.log(clicked_anime);
-    selected_anime.value = clicked_anime;
+    selected_anime.value = null;
 
     if (!drawer_anime_details) {
         drawer_anime_details = new Drawer(
@@ -41,6 +49,10 @@ async function openAnimeDetails(clicked_anime) {
     }
 
     drawer_anime_details.show();
+
+    clicked_anime.details = await getAnimeDetails(clicked_anime);
+    selected_anime.value = clicked_anime;
+    console.log(clicked_anime);
 }
 
 const form_saved_anime = reactive({
@@ -92,18 +104,18 @@ onMounted(() => {
     <NewAuthLayout>
         <AnimeDetailsDrawer :anime="selected_anime" />
 
-        <div v-if="$page.props.auth.user" class="ml-6 mt-16 sm:ml-12">
+        <div v-if="$page.props.auth.user" class="mt-16 ml-6 sm:ml-12">
             <h2
-                class="border-b-2 border-white/40 pb-2 text-lg font-black text-white/60"
+                class="pb-2 text-lg font-black border-b-2 border-white/40 text-white/60"
             >
                 Minha Lista
             </h2>
 
-            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <div class="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-4">
                 <HomeFilterSelect>
                     <label
                         for="q"
-                        class="block w-24 min-w-fit text-sm font-medium text-white/80"
+                        class="block w-24 text-sm font-medium min-w-fit text-white/80"
                     >
                         Pesquisar:
                     </label>
@@ -112,7 +124,7 @@ onMounted(() => {
                         id="q"
                         ref="query_input"
                         type="search"
-                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none placeholder:font-bold placeholder:text-white/60 focus:ring-transparent sm:w-44"
+                        class="flex-1 block p-2 py-1 text-sm font-bold text-white bg-transparent border-none rounded outline-none appearance-none placeholder:font-bold placeholder:text-white/60 focus:ring-transparent sm:w-44"
                         placeholder="Nome do Anime..."
                         v-model="saved_q"
                         autocomplete="off"
@@ -122,7 +134,7 @@ onMounted(() => {
                 <HomeFilterSelect>
                     <label
                         for="orderBy"
-                        class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                        class="block w-24 text-sm font-medium min-w-fit text-white/50"
                     >
                         Ordenar por:
                     </label>
@@ -130,7 +142,7 @@ onMounted(() => {
                     <select
                         id="orderBy"
                         v-model="form_saved_anime.order_by"
-                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
+                        class="flex-1 block p-2 py-1 text-sm font-bold text-white bg-transparent border-none rounded outline-none appearance-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
                         <option
                             v-for="option in saved_order_by_options"
@@ -145,7 +157,7 @@ onMounted(() => {
                 <HomeFilterSelect>
                     <label
                         for="status"
-                        class="block w-24 min-w-fit text-sm font-medium text-white/50"
+                        class="block w-24 text-sm font-medium min-w-fit text-white/50"
                     >
                         Status:
                     </label>
@@ -153,7 +165,7 @@ onMounted(() => {
                     <select
                         id="status"
                         v-model="form_saved_anime.status"
-                        class="block flex-1 appearance-none rounded border-none bg-transparent p-2 py-1 text-sm font-bold text-white outline-none focus:ring-transparent disabled:text-white/30 sm:w-44"
+                        class="flex-1 block p-2 py-1 text-sm font-bold text-white bg-transparent border-none rounded outline-none appearance-none focus:ring-transparent disabled:text-white/30 sm:w-44"
                     >
                         <option class="text-black" value="">Todos</option>
 
@@ -169,10 +181,10 @@ onMounted(() => {
                 </HomeFilterSelect>
             </div>
 
-            <div class="mt-6 max-w-full">
-                <!-- <div class="flex gap-4 overflow-x-auto py-2"> -->
+            <div class="max-w-full mt-6">
+                <!-- <div class="flex gap-4 py-2 overflow-x-auto"> -->
                 <div
-                    class="mr-6 grid grid-cols-2 gap-y-4 py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
+                    class="grid grid-cols-2 py-2 mr-6 gap-y-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
                 >
                     <SavedAnimeCard
                         v-for="anime in saved_animes_filtered"
@@ -186,7 +198,7 @@ onMounted(() => {
 
         <div class="mx-8 mt-16" v-else>
             <div
-                class="mx-auto max-w-5xl rounded-xl border border-white/20 bg-black/50 px-6 py-10 text-center text-white shadow-xl backdrop-blur"
+                class="max-w-5xl px-6 py-10 mx-auto text-center text-white border shadow-xl rounded-xl border-white/20 bg-black/50 backdrop-blur"
             >
                 <p class="text-4xl font-bold">Bem vindo visitante!</p>
 
