@@ -28,12 +28,11 @@ class JikanMoeAnimesService
             'type' => $type,
         ]);
 
-        return cache()
-            ->remember(
-                $query,
-                now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
-            );
+        return cache()->remember(
+            $query,
+            now()->addDays(1),
+            fn () => Http::get(self::BASE_URL . '/anime?' . $query)->json()
+        );
     }
 
     public static function queryFromRequestCached(Request $request)
@@ -42,12 +41,11 @@ class JikanMoeAnimesService
             'q' => $request->q,
         ]);
 
-        return cache()
-            ->remember(
-                $query,
-                now()->addDays(1),
-                fn () => self::queryFromRequest($request)
-            );
+        return cache()->remember(
+            $query,
+            now()->addDays(1),
+            fn () => self::queryFromRequest($request)
+        );
     }
 
     public static function queryFromRequest(Request $request)
@@ -68,23 +66,27 @@ class JikanMoeAnimesService
             'order_by' => 'popularity',
         ]);
 
-        return cache()
-            ->remember(
-                'top_ten_animes',
-                now()->addDays(1),
-                fn () => Http::get(self::BASE_URL . '/anime?' . $query)
-                    ->json()
-            );
+        return cache()->remember(
+            'top_ten_animes',
+            now()->addDays(1),
+            fn () => Http::get(self::BASE_URL . '/anime?' . $query)
+                ->json()
+        );
     }
 
     public static function byMalIdCached(int $mal_id): array
     {
-        return cache()
-            ->remember(
-                'mal_id_' . $mal_id,
-                now()->addDays(1),
-                fn () => self::byMalId($mal_id)
-            );
+        $cache = cache('mal_id_' . $mal_id);
+
+        if ($cache) {
+            return $cache;
+        }
+
+        return cache()->remember(
+            'mal_id_' . $mal_id,
+            now()->addDays(1),
+            fn () => self::byMalId($mal_id)
+        );
     }
 
     public static function byMalId(int $mal_id): array
