@@ -36,7 +36,6 @@ watch(props, () => {
 
 <template>
     <div
-        v-if="anime"
         id="drawer-saved-anime-details"
         class="fixed left-0 top-0 z-40 h-screen w-11/12 -translate-x-full overflow-y-auto bg-black/10 p-4 backdrop-blur-2xl transition-transform sm:w-[540px]"
         tabindex="-1"
