@@ -79,9 +79,9 @@ function removeAnime() {
 </script>
 
 <template>
-    <div class="flex w-44 flex-col justify-end rounded-xl" :title="anime.title">
+    <div class="flex flex-col justify-end w-44 rounded-xl" :title="anime.title">
         <p
-            class="z-10 line-clamp-3 w-full p-1 text-center text-xs font-black text-white"
+            class="z-10 w-full p-1 text-xs font-black text-center text-white line-clamp-3"
         >
             {{ anime.title }}
         </p>
@@ -91,13 +91,13 @@ function removeAnime() {
             @click="$emit('changeSelectedAnime', anime)"
         >
             <img
-                class="min-w-96 object-cover"
+                class="object-cover min-w-96"
                 :src="anime.image_cover_url"
                 :alt="`Capa do anime ${anime.title}`"
             />
         </button>
 
-        <div class="flex w-full items-center">
+        <div class="flex items-center w-full">
             <ButtonChangeEp
                 class="flex h-8 w-8 items-center justify-center rounded-bl-lg bg-[#1D0D80]"
                 @click="decreaseSavedAnimeEpisode(anime)"
@@ -133,21 +133,21 @@ function removeAnime() {
             <!-- Dropdown menu -->
             <div
                 :id="`dropdownSavedAnimeDropdown-${anime.id}`"
-                class="z-20 hidden w-64 max-w-full divide-y divide-gray-300/20 rounded-lg border border-white/20 bg-black/50 p-3 shadow backdrop-blur-xl"
+                class="z-20 hidden w-64 max-w-full p-3 border divide-y rounded-lg shadow divide-gray-300/20 border-white/20 bg-black/50 backdrop-blur-xl"
                 aria-labelledby="dropdownNotificationButton"
             >
                 <div
-                    class="mb-2 flex flex-col items-center justify-between gap-1"
+                    class="flex flex-col items-center justify-between gap-1 mb-2"
                     v-if="anime.links"
                 >
                     <div class="flex w-full gap-1" v-for="link in anime.links">
                         <a
                             :href="link"
                             target="_blank"
-                            class="md w-full rounded-lg p-2 text-sm font-black text-gray-100 hover:bg-black/30 hover:text-indigo-600"
+                            class="w-full p-2 text-sm font-black text-gray-100 rounded-lg md hover:bg-black/30 hover:text-indigo-600"
                         >
                             <div class="flex items-center gap-2">
-                                <ArrowTopRightSquare class="h-4 w-4" />
+                                <ArrowTopRightSquare class="w-4 h-4" />
 
                                 {{ useUrl().domain(link) }}
                             </div>
@@ -156,40 +156,40 @@ function removeAnime() {
                         <button
                             type="button"
                             @click="removeLink(anime.id, link)"
-                            class="hover:red-600 flex flex-1 items-center gap-2 rounded-lg border border-red-600 p-2 text-sm font-black text-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
+                            class="flex items-center flex-1 gap-2 p-2 text-sm font-black text-red-600 border border-red-600 rounded-lg hover:red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
                         >
-                            <TrashBasic class="h-4 w-4" />
+                            <TrashBasic class="w-4 h-4" />
                         </button>
                     </div>
                 </div>
 
                 <form @submit.prevent="addLink">
                     <div
-                        class="700 flex items-center justify-between gap-1 py-2"
+                        class="flex items-center justify-between gap-1 py-2 700"
                     >
                         <input
                             v-model="new_link"
                             type="text"
                             placeholder="Cole seu link..."
-                            class="block flex-1 rounded-lg border border-white/10 bg-transparent bg-gradient-to-b from-white/10 to-black/10 p-2 text-sm text-white placeholder-white/30 focus:border-white/40 focus:ring-white/40"
+                            class="flex-1 block p-2 text-sm text-white bg-transparent border rounded-lg border-white/10 bg-gradient-to-b from-white/10 to-black/10 placeholder-white/30 focus:border-white/40 focus:ring-white/40"
                         />
 
                         <button
                             type="submit"
-                            class="flex h-10 w-10 items-center justify-center rounded-lg border border-indigo-700 text-center text-sm font-black text-indigo-700 hover:bg-indigo-600 hover:text-white hover:shadow-lg hover:shadow-indigo-700/80"
+                            class="flex items-center justify-center w-10 h-10 text-sm font-black text-center text-indigo-700 border border-indigo-700 rounded-lg hover:bg-indigo-600 hover:text-white hover:shadow-lg hover:shadow-indigo-700/80"
                         >
-                            <PlusCircle class="h-4 w-4" />
+                            <PlusCircle class="w-4 h-4" />
                         </button>
                     </div>
                 </form>
 
-                <div class="700 flex items-center justify-between gap-1 pt-2">
+                <div class="flex items-center justify-between gap-1 pt-2 700">
                     <button
                         type="button"
                         @click.prevent="removeAnime"
-                        class="hover:red-600 flex flex-1 items-center gap-2 rounded-lg border border-red-600 p-2 text-sm font-black text-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
+                        class="flex items-center flex-1 gap-2 p-2 text-sm font-black text-red-600 border border-red-600 rounded-lg hover:red-600 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-600/50 focus:outline-none focus:ring-red-600"
                     >
-                        <TrashBasic class="h-4 w-4" />
+                        <TrashBasic class="w-4 h-4" />
 
                         <span>Remover anime</span>
                     </button>
