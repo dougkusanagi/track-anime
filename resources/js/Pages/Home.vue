@@ -40,7 +40,9 @@ function getAnimeDetails(anime) {
 }
 
 async function openAnimeDetails(clicked_anime) {
-    selected_anime.value = null;
+    clicked_anime.details = await getAnimeDetails(clicked_anime);
+    selected_anime.value = clicked_anime;
+    console.log(clicked_anime);
 
     if (!drawer_anime_details) {
         drawer_anime_details = new Drawer(
@@ -49,10 +51,6 @@ async function openAnimeDetails(clicked_anime) {
     }
 
     drawer_anime_details.show();
-
-    clicked_anime.details = await getAnimeDetails(clicked_anime);
-    selected_anime.value = clicked_anime;
-    console.log(clicked_anime);
 }
 
 const form_saved_anime = reactive({
