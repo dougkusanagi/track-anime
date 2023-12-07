@@ -36,7 +36,7 @@ class JikanMoeAnimesService
             );
     }
 
-    public static function queryFromRequest(Request $request)
+    public static function queryFromRequestCached(Request $request)
     {
         $query = http_build_query([
             'q' => $request->q,
@@ -46,38 +46,35 @@ class JikanMoeAnimesService
             ->remember(
                 $query,
                 now()->addDays(1),
-                function () use ($query) {
-                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
-
-                    if ($response->failed()) {
-                        return [];
-                    }
-
-                    return $response->json();
-                }
+                fn () => self::queryFromRequest($request)
             );
+    }
+
+    public static function queryFromRequest(Request $request)
+    {
+        $query = http_build_query([
+            'q' => $request->q,
+        ]);
+
+        return ($response = Http::get(self::BASE_URL . '/anime?' . $query))->failed()
+            ? []
+            : $response->collect('data');
     }
 
     public static function getTopTen(): array
     {
+        $query = http_build_query([
+            'limit' => 10,
+            'order_by' => 'popularity',
+        ]);
+
         return cache()
             ->remember(
                 'top_ten_animes',
                 now()->addDays(1),
-                function () {
-                    $query = http_build_query([
-                        'limit' => 10,
-                        'order_by' => 'popularity',
-                    ]);
-
-                    $response = Http::get(self::BASE_URL . '/anime?' . $query);
-
-                    if ($response->failed()) {
-                        return [];
-                    }
-
-                    return $response->json();
-                }
+                fn () => Http::get(self::BASE_URL . '/anime?' . $query)
+                    ->throw()
+                    ->json()
             );
     }
 
@@ -95,7 +92,7 @@ class JikanMoeAnimesService
     {
         $response = Http::get(self::BASE_URL . '/anime/' . $mal_id);
 
-        return $response->failed()
+        return !$response->failed()
             ? ['data' => self::toResource($response)]
             : [];
     }
