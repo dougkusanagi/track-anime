@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, watch, reactive } from "vue";
 import { Head, router, usePage } from "@inertiajs/vue3";
 
+import { getAnimeDetails } from "@/Repositories/AnimeRepository";
+
 import NewAuthLayout from "@/Layouts/NewAuthLayout.vue";
 import AnimeDetailsDrawer from "@/Components/AnimeDetailsDrawer.vue";
 
@@ -11,19 +13,27 @@ import AppButton from "@/Components/AppButton.vue";
 
 import { initFlowbite } from "flowbite";
 import { onBeforeMount } from "vue";
-import axios from "axios";
 
 const props = defineProps({
     top_ten_animes: Object,
     saved_animes: Object,
 });
-
+const form_saved_anime = reactive({
+    order_by: "last_watched_at",
+    status: "Watching",
+});
+const saved_order_by_options = reactive([
+    { value: "last_watched_at", label: "Último assistido" },
+    { value: "title", label: "Nome" },
+]);
+const saved_animes_filtered = computed(() =>
+    props.saved_animes.filter((anime) =>
+        anime.title.toLowerCase().includes(saved_q.value.toLowerCase())
+    )
+);
 const query_input = ref("");
-
 const saved_q = ref("");
-
 const selected_anime = ref(props.top_ten_animes[0]);
-
 let drawer_anime_details = null;
 
 onBeforeMount(() => {
@@ -31,44 +41,15 @@ onBeforeMount(() => {
     selected_anime.value = anime;
 });
 
-function getAnimeDetails(anime) {
-    return new Promise(async (resolve) => {
-        const { data } = await axios.get(route("anime-details", anime.mal_id));
+onMounted(() => {
+    initFlowbite();
 
-        resolve(data);
-    });
-}
-
-async function openAnimeDetails(clicked_anime) {
-    clicked_anime.details = await getAnimeDetails(clicked_anime);
-    selected_anime.value = clicked_anime;
-    console.log(clicked_anime);
-
-    if (!drawer_anime_details) {
-        drawer_anime_details = new Drawer(
-            document.getElementById("drawer-saved-anime-details")
-        );
+    if (query_input.value) {
+        query_input.value.focus();
     }
-
-    drawer_anime_details.show();
-}
-
-const form_saved_anime = reactive({
-    order_by: "last_watched_at",
-    status: "",
 });
-const saved_order_by_options = reactive([
-    { value: "last_watched_at", label: "Último assistido" },
-    { value: "title", label: "Nome" },
-]);
 
-const saved_animes_filtered = computed(() =>
-    props.saved_animes.filter((anime) =>
-        anime.title.toLowerCase().includes(saved_q.value.toLowerCase())
-    )
-);
-
-watch(form_saved_anime, async (_new, _old) => {
+watch(form_saved_anime, async () => {
     router.get(
         route("home"),
         {
@@ -87,13 +68,18 @@ watch(form_saved_anime, async (_new, _old) => {
     );
 });
 
-onMounted(() => {
-    initFlowbite();
+async function openAnimeDetails(clicked_anime) {
+    clicked_anime.details = await getAnimeDetails(clicked_anime);
+    selected_anime.value = clicked_anime;
 
-    if (query_input.value) {
-        query_input.value.focus();
+    if (!drawer_anime_details) {
+        drawer_anime_details = new Drawer(
+            document.getElementById("drawer-saved-anime-details")
+        );
     }
-});
+
+    drawer_anime_details.show();
+}
 </script>
 
 <template>
