@@ -1,7 +1,11 @@
 <?php
 
-it('returns a successful response', function () {
-    $response = $this->get('/');
+it('has a home page', function () {
+    $this->get(route('home'))
+        ->assertOk();
+});
 
-    $response->assertStatus(200);
+it('has a search page', function () {
+    $this->get(route('search'))
+        ->assertOk();
 });
