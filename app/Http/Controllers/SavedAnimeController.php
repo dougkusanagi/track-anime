@@ -35,7 +35,7 @@ class SavedAnimeController
             'mal_id' => $anime['mal_id'],
             'title' => $anime['title'],
             'image_cover_url' => $anime['images']['webp']['image_url'],
-            'episode_count' => 0,
+            'episode_count' => 1,
         ]);
 
         return to_route('home')
