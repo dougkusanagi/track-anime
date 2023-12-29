@@ -12,7 +12,9 @@ class SavedAnime extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+    ];
 
     protected $casts = [
         'links' => 'array',
@@ -22,11 +24,16 @@ class SavedAnime extends Model
     {
         $order_by = $request->get('orderBy') ?? 'last_watched_at';
         $sort = $request->get('sort') ?? 'desc';
-        $status = $request->has('status') ?? SavedAnimeStatusEnum::Watching->value;
+        $status = $request->has('status')
+            ? $request->get('status')
+            : SavedAnimeStatusEnum::Watching->value;
 
         return $query
             ->where('user_id', auth()->user()->id)
-            ->where('status', $status)
+            ->when(
+                $status,
+                fn ($query) => $query->where('status', $status)
+            )
             ->orderBy($order_by, $sort);
     }
 }
