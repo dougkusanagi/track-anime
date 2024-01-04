@@ -4,14 +4,18 @@ import { ref, computed, shallowRef, onBeforeMount } from "vue";
 import House from "@/Icons/HeroIcons/House.vue";
 import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
-import { Link, usePage } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
 import DropdownUserMenu from "./DropdownUserMenu.vue";
 import AppButtonHeader from "./AppButtonHeader.vue";
 
 const isOpen = ref(false);
-const page = usePage();
-const isAuth = computed(() => page.props.auth.user);
+const q = ref("");
+const showSearchHeader = computed(() => {
+    return (
+        computed(() => usePage().props.auth.user) && !route().current("search")
+    );
+});
 
 const links = shallowRef([
     {
@@ -21,15 +25,9 @@ const links = shallowRef([
     },
 ]);
 
-onBeforeMount(() => {
-    if (isAuth) {
-        links.value.push({
-            name: "Pesquisar",
-            href: route("search"),
-            icon: MagnifyingGlass,
-        });
-    }
-});
+function search() {
+    router.get(route("search", { q: q.value }));
+}
 </script>
 
 <template>
@@ -52,7 +50,7 @@ onBeforeMount(() => {
         <div class="flex items-center justify-between px-4 py-3 sm:p-0">
             <Link :href="route('home')" class="flex items-center gap-2">
                 <img
-                    class="mt-2 h-12"
+                    class="h-12 mt-2"
                     src="/logo-anime-track.svg"
                     alt="Workcation"
                 />
@@ -63,9 +61,9 @@ onBeforeMount(() => {
             <button
                 @click="isOpen = !isOpen"
                 type="button"
-                class="block rounded p-2 text-gray-500 hover:bg-indigo-600 hover:text-white hover:shadow-xl hover:shadow-indigo-600/60 sm:hidden"
+                class="block p-2 text-gray-500 rounded hover:bg-indigo-600 hover:text-white hover:shadow-xl hover:shadow-indigo-600/60 sm:hidden"
             >
-                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
                     <path
                         v-if="isOpen"
                         fill-rule="evenodd"
@@ -83,7 +81,7 @@ onBeforeMount(() => {
 
         <nav
             :class="isOpen ? 'block' : 'hidden'"
-            class="flex items-center border-t-2 px-2 pb-4 pt-2 sm:flex sm:border-none sm:p-0"
+            class="flex items-center px-2 pt-2 pb-4 border-t-2 sm:flex sm:border-none sm:p-0"
         >
             <div class="flex items-center gap-10">
                 <AppButtonHeader :href="link.href" v-for="link in links">
@@ -91,11 +89,20 @@ onBeforeMount(() => {
 
                     {{ link.name }}
                 </AppButtonHeader>
+
+                <form @submit.prevent="search" v-if="showSearchHeader">
+                    <input
+                        type="search"
+                        placeholder="Pesquisar..."
+                        v-model="q"
+                        class="flex items-center gap-2 px-4 py-3 font-semibold text-black transition-all rounded"
+                    />
+                </form>
             </div>
 
             <a
                 href="mailto:dl.aguiar@yahoo.com.br?subject=EMAIL DO TRACK ANIME"
-                class="ml-6 mr-8 flex h-7 w-7 items-center justify-center rounded-full border border-red-800 text-xs transition-all hover:bg-red-800"
+                class="flex items-center justify-center ml-6 mr-8 text-xs transition-all border border-red-800 rounded-full h-7 w-7 hover:bg-red-800"
                 title="Envie sua sujestão 🤯️ ou relate um problema 💩️"
             >
                 ?
