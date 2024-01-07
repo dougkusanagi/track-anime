@@ -105,6 +105,9 @@ class SavedAnimeController
 
     private function alreadyExists(Request $request)
     {
-        return (bool) SavedAnime::where('mal_id', $request->mal_id)->first();
+        return (bool) SavedAnime::query()
+            ->where('mal_id', $request->mal_id)
+            ->where('user_id', auth()->user()->id)
+            ->first();
     }
 }
