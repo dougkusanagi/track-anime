@@ -1,8 +1,7 @@
 <script setup>
-import { ref, computed, shallowRef, onBeforeMount } from "vue";
+import { ref, computed, shallowRef } from "vue";
 
 import House from "@/Icons/HeroIcons/House.vue";
-import MagnifyingGlass from "@/Icons/HeroIcons/MagnifyingGlass.vue";
 import UserCircle from "@/Icons/HeroIcons/UserCircle.vue";
 import { Link, router, usePage } from "@inertiajs/vue3";
 import CaretDown from "@/Icons/CaretDown.vue";
@@ -11,11 +10,9 @@ import AppButtonHeader from "./AppButtonHeader.vue";
 
 const isOpen = ref(false);
 const q = ref("");
-const showSearchHeader = computed(() => {
-    return (
-        computed(() => usePage().props.auth.user) && !route().current("search")
-    );
-});
+const showSearchHeader = computed(
+    () => usePage().props.auth.user && !route().current("search")
+);
 
 const links = shallowRef([
     {
