@@ -12,7 +12,7 @@ class ProvidedLinksService
     private $site_providers = [
         'animes.vision' => AnimesVisionProvider::class,
         'animeshouse.net' => AnimesHouseProvider::class,
-        'animesonline.nz' => AnimesOnlineProvider::class,
+        'animesonlinecc.to' => AnimesOnlineProvider::class,
     ];
 
     public function __invoke(SavedAnime $saved_anime)

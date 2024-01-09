@@ -10,6 +10,6 @@ class AnimesOnlineProvider
     {
         $title = str($saved_anime->title)->slug();
 
-        return "https://animesonline.nz/episodio/$title-episodio-$saved_anime->episode_count/";
+        return "https://animesonlinecc.to/episodio/$title-episodio-$saved_anime->episode_count";
     }
 }
