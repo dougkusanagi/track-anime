@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\SavedAnimeStatusEnum;
+use App\Services\ProvidedLinksService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class SavedAnime extends Model
 {
@@ -18,7 +20,22 @@ class SavedAnime extends Model
 
     protected $casts = [
         'links' => 'array',
+        // 'provided_links' => 'array',
     ];
+
+    protected $appends = [
+        'provided_links',
+    ];
+
+    protected function getProvidedLinksAttribute()
+    {
+        $title = str($this->title)->slug();
+        $episode_count = str_pad($this->episode_count, 2, '0', STR_PAD_LEFT);
+        return [
+            'animes.vision' => "https://animes.vision/animes/$title/episodio-$episode_count/legendado",
+            'animeshouse.net' => "https://animeshouse.net/episodio/$title-s1-episodio-$this->episode_count-legendado-hd",
+        ];
+    }
 
     public function scopeHome(Builder $query, Request $request): Builder
     {

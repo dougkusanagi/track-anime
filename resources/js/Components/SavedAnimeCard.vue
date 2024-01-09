@@ -138,8 +138,42 @@ function removeAnime() {
             >
                 <div
                     class="flex flex-col items-center justify-between gap-1 mb-2"
+                    v-if="anime.provided_links"
+                >
+                    <span
+                        class="w-full px-2 text-xs font-black text-gray-100/60"
+                    >
+                        Links do Site
+                    </span>
+
+                    <div
+                        class="flex w-full gap-1"
+                        v-for="link in anime.provided_links"
+                    >
+                        <a
+                            :href="link"
+                            target="_blank"
+                            class="w-full p-2 text-sm font-black text-gray-100 rounded-lg md hover:bg-black/30 hover:text-indigo-600"
+                        >
+                            <div class="flex items-center gap-2">
+                                <ArrowTopRightSquare class="w-4 h-4" />
+
+                                {{ useUrl().domain(link) }}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-col items-center justify-between gap-1 pt-2 mb-2"
                     v-if="anime.links"
                 >
+                    <span
+                        class="w-full px-2 text-xs font-black text-gray-100/60"
+                    >
+                        Links Adicionados
+                    </span>
+
                     <div class="flex w-full gap-1" v-for="link in anime.links">
                         <a
                             :href="link"
