@@ -10,6 +10,10 @@ class AnimesHouseProvider
     {
         $title = str($saved_anime->title)->slug();
 
-        return "https://animeshouse.net/episodio/$title-s1-episodio-$saved_anime->episode_count-legendado-hd";
+        $url = "https://animeshouse.net/episodio/$title-episodio-$saved_anime->episode_count-legendado-hd";
+
+        $url = str_replace('2nd-season', 's2', $url);
+
+        return $url;
     }
 }
