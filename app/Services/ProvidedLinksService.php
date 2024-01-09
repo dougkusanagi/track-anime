@@ -18,7 +18,7 @@ class ProvidedLinksService
     public function __invoke(SavedAnime $saved_anime)
     {
         return array_map(
-            fn ($provider) => $provider($saved_anime),
+            fn ($provider) => (new $provider)($saved_anime),
             $this->site_providers
         );
     }

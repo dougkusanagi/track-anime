@@ -20,7 +20,6 @@ class SavedAnime extends Model
 
     protected $casts = [
         'links' => 'array',
-        // 'provided_links' => 'array',
     ];
 
     protected $appends = [
@@ -29,12 +28,7 @@ class SavedAnime extends Model
 
     protected function getProvidedLinksAttribute()
     {
-        $title = str($this->title)->slug();
-        $episode_count = str_pad($this->episode_count, 2, '0', STR_PAD_LEFT);
-        return [
-            'animes.vision' => "https://animes.vision/animes/$title/episodio-$episode_count/legendado",
-            'animeshouse.net' => "https://animeshouse.net/episodio/$title-s1-episodio-$this->episode_count-legendado-hd",
-        ];
+        return (new ProvidedLinksService)($this);
     }
 
     public function scopeHome(Builder $query, Request $request): Builder
