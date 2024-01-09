@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\SavedAnime;
 use App\SiteProviders\AnimesHouseProvider;
+use App\SiteProviders\AnimesOnlineHdVip;
 use App\SiteProviders\AnimesVisionProvider;
 use App\SiteProviders\AnimesOnlineProvider;
 
@@ -13,6 +14,7 @@ class ProvidedLinksService
         'animes.vision' => AnimesVisionProvider::class,
         'animeshouse.net' => AnimesHouseProvider::class,
         'animesonlinecc.to' => AnimesOnlineProvider::class,
+        'animesonlinehd.vip' => AnimesOnlineHdVip::class,
     ];
 
     public function __invoke(SavedAnime $saved_anime)
