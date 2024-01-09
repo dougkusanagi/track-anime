@@ -13,6 +13,7 @@ class AnimesHouseProvider
         $url = "https://animeshouse.net/episodio/$title-episodio-$saved_anime->episode_count-legendado-hd";
 
         $url = str_replace('2nd-season', 's2', $url);
+        $url = str_replace('2nd', 's2', $url);
 
         return $url;
     }
