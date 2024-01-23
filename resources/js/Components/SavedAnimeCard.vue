@@ -91,7 +91,7 @@ function removeAnime() {
             @click="$emit('changeSelectedAnime', anime)"
         >
             <img
-                class="object-cover min-w-96"
+                class="object-cover"
                 :src="anime.image_cover_url"
                 :alt="`Capa do anime ${anime.title}`"
             />
